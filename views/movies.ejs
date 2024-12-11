@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Résultats de recherche</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  <h1>Résultats pour "<%= keyword %>"</h1>
+
+  <% if (error) { %>
+    <p style="color: red;"><%= error %></p>
+  <% } else if (movies.length === 0) { %>
+    <p>Aucun film trouvé.</p>
+  <% } else { %>
+    <div id="results">
+      <% movies.forEach(movie => { %>
+        <div>
+          <h3><%= movie.name %></h3>
+          <p><strong>ID:</strong> <%= movie.id %></p>
+          <p><strong>Date:</strong> <%= movie.date %></p>
+          <p><strong>Tagline:</strong> <%= movie.tagline %></p>
+          <p><strong>Description:</strong> <%= movie.description %></p>
+          <p><strong>Durée:</strong> <%= movie.minute %> minutes</p>
+          <p><strong>Note:</strong> <%= movie.rating %></p>
+        </div>
+        <hr>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <a href="/">Retour à l'accueil</a>
+</body>
+</html>

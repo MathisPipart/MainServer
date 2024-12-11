@@ -7,6 +7,17 @@
     <script src="/javascripts/index.js"></script>
 </head>
 <body onload="init()">
+
+<h1>Bienvenue</h1>
+<p>Recherchez des films par mot-clé :</p>
+
+<form action="/springboot/findByKeyword" method="get">
+<input type="text" name="name" placeholder="Entrez un mot-clé" required>
+<button type="submit">Rechercher</button>
+</form>
+
+
+
 <h1><%= title %></h1>
 <div id="initial_form" style="display: block">
     <p>Please insert the id of the Room you want to Join, if you do not have a room id, click Generate Room</p>
