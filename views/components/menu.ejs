@@ -1,6 +1,31 @@
-<nav>
-    <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/movies">Movies</a></li>
-    </ul>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">My Website</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/genres">Genres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/releases">Releases</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/languages">Explorer par langue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/chat">Chat</a>
+                </li>
+            </ul>
+            <form class="d-flex" action="/springboot/findByKeyword" method="get">
+                <input class="form-control me-2" type="text" name="name" placeholder="Entrez un mot-clé" required>
+                <button class="btn btn-outline-success" type="submit">Rechercher</button>
+            </form>
+        </div>
+    </div>
 </nav>
