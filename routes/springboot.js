@@ -16,12 +16,12 @@ router.get('/findByKeyword', async (req, res) => {
         });
 
         // Rendu de la vue avec les données des films
-        res.render('movies', { movies: response.data, keyword: name, error: null });
+        res.render('pages/resultResearch', { title: 'Résultats de recherche', movies: response.data, keyword: name, error: null });
     } catch (error) {
         console.error('Erreur lors de la récupération des films:', error.message);
 
         // En cas d'erreur, transmettre un message d'erreur à la vue
-        res.render('movies', { movies: [], keyword: name, error: 'Erreur lors de la récupération des données ou aucun film trouvé.' });
+        res.render('pages/resultResearch', { title: 'Search Error', movies: [], keyword: name, error: 'Erreur lors de la récupération des données ou aucun film trouvé.' });
     }
 });
 
