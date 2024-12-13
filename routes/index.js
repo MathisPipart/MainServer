@@ -6,8 +6,9 @@ router.get('/', function(req, res, next) {
   res.render('pages/index', { title: 'Home' });
 });
 
-router.get('/genres', function(req, res, next) {
-  res.render('pages/genres', { title: 'Genres' });
+router.get('/genres', (req, res) => {
+  const genre = req.query.genre || 'Genres'; // Défaut à "Genres" si aucun genre n'est spécifié
+  res.render('pages/genres', { title: genre, genre });
 });
 
 router.get('/releases', function(req, res, next) {
