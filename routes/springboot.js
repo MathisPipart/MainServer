@@ -56,5 +56,43 @@ router.get('/genres', async (req, res) => {
     }
 });
 
+// Route pour récupérer les films par date
+router.get('/releases', async (req, res) => {
+    const { date } = req.query;
+
+    try {
+        // Validation de la date au format YYYY
+        if (!/^\d{4}$/.test(date)) {
+            return res.render('pages/releases', {
+                title: 'Recherche par Date',
+                movies: [],
+                date,
+                error: 'La date saisie est invalide. Format attendu : YYYY.'
+            });
+        }
+
+        // Appel à l'API Spring Boot
+        const response = await axios.get(`${SPRING_BOOT_API}/findByDate`, { params: { date } });
+
+        // Rendu de la vue avec les résultats
+        res.render('pages/releases', {
+            title: `Films de l'année ${date}`,
+            movies: response.data,
+            date,
+            error: null
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des films par date :', error.message);
+
+        // Rendu en cas d'erreur
+        res.render('pages/dateResults', {
+            title: 'Erreur de recherche',
+            movies: [],
+            date,
+            error: 'Erreur lors de la récupération des données ou aucun film trouvé.'
+        });
+    }
+});
+
 
 module.exports = router;
