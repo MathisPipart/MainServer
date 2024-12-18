@@ -25,4 +25,36 @@ router.get('/findByKeyword', async (req, res) => {
     }
 });
 
+
+// Route pour récupérer les films par genre
+router.get('/genres', async (req, res) => {
+    const { genre } = req.query; // Récupération du genre depuis la requête
+
+    try {
+        // Appel à l'API Spring Boot
+        const response = await axios.get(`${SPRING_BOOT_API}/findByGenre`, {
+            params: { genre },
+        });
+
+        // Rendu de la vue avec les données des films
+        res.render('pages/genres', {
+            title: `Films pour le genre : ${genre}`,
+            movies: response.data,
+            genre: genre,
+            error: null
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des films par genre:', error.message);
+
+        // En cas d'erreur, transmettre un message d'erreur à la vue
+        res.render('pages/genres', {
+            title: 'Erreur de recherche',
+            movies: [],
+            genre: genre,
+            error: 'Erreur lors de la récupération des données ou aucun film trouvé.'
+        });
+    }
+});
+
+
 module.exports = router;
