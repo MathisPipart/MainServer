@@ -34,8 +34,14 @@
                         <li><a class="dropdown-item" href="/springboot/genres?genre=western">western</a></li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/releases">Releases</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="genresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Releases
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="releaseDropdown">
+                        <li><a class="dropdown-item" href="/springboot/releases?date=2000">2000</a></li>
+                        <li><a class="dropdown-item" href="/springboot/releases?date=2010">2010</a></li>
+                    </ul>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/languages">Explorer par langue</a>
