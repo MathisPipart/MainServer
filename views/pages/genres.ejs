@@ -1,3 +1,21 @@
-<h1><%= genre %></h1>
+<h1>Résultats pour le genre : <%= genre %></h1>
+
+<% if (error) { %>
+    <p><%= error %></p>
+<% } else { %>
+    <div id="results">
+        <% movies.forEach(movie => { %>
+            <div>
+                <h3>Nom du Film: <%= movie.name %></h3>
+                <p><strong>Date:</strong> <%= movie.date %></p>
+                <p><strong>Tagline:</strong> <%= movie.tagline %></p>
+                <p><strong>Description:</strong> <%= movie.description %></p>
+                <p><strong>Durée (minutes):</strong> <%= movie.minute %></p>
+                <p><strong>Note:</strong> <%= movie.rating %></p>
+                <p><strong>Genres:</strong> <%= movie.genres %></p>
+            </div>
+        <% }) %>
+    </div>
+<% } %>
 
 
