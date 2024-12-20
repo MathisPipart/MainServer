@@ -1,1 +1,74 @@
-<h1>Languages Page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+</head>
+<body>
+    <h1><%= title %></h1>
+
+    <!-- Affichage des erreurs générales -->
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
+    <% } %>
+
+    <!-- Formulaire pour sélectionner la langue et le type -->
+    <form id="language-form" action="/springboot/languages" method="get">
+        <label for="type-select">Types disponibles :</label>
+        <select id="type-select" name="selectedType">
+            <option value="">-- Sélectionnez un type --</option>
+            <% if (types && types.length > 0) { %>
+                <% types.forEach(type => { %>
+                    <option value="<%= type %>" <%= selectedType === type ? 'selected' : '' %>><%= type %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="" disabled>Pas de types disponibles</option>
+            <% } %>
+        </select>
+
+        <label for="language-select">Langues disponibles :</label>
+        <select id="language-select" name="selectedLanguage">
+            <option value="">-- Sélectionnez une langue --</option>
+            <% if (languages && languages.length > 0) { %>
+                <% languages.forEach(language => { %>
+                    <option value="<%= language %>" <%= selectedLanguage === language ? 'selected' : '' %>><%= language %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="" disabled>Pas de langues disponibles</option>
+            <% } %>
+        </select>
+        <button type="submit">Rechercher</button>
+    </form>
+
+    <br>
+    <br>
+
+    <!-- Affichage des résultats -->
+    <div id="results">
+        <% if (movies && movies.length > 0) { %>
+            <% movies.forEach(movie => { %>
+                <div>
+                    <h3><%= movie.name || "Nom non disponible" %> (<%= movie.date || "Date inconnue" %>)</h3>
+                    <p>Tagline: <%= movie.tagline || "Non disponible" %></p>
+                    <p>Description: <%= movie.description || "Non disponible" %></p>
+                    <p>Duration: <%= movie.duration || "Inconnue" %> minutes</p>
+                    <p>Rating: <%= movie.rating || "Non noté" %></p>
+                    <% if (movie.languages && movie.languages.length > 0) { %>
+                        <h4>Languages:</h4>
+                        <ul>
+                            <% movie.languages.forEach(lang => { %>
+                                <li><%= lang.type %>: <%= lang.language %></li>
+                            <% }) %>
+                        </ul>
+                    <% } else { %>
+                        <p>Aucune langue trouvée.</p>
+                    <% } %>
+                </div>
+            <% }) %>
+        <% } else if (selectedLanguage || selectedType) { %>
+            <p>Aucun film trouvé pour cette recherche.</p>
+        <% } %>
+    </div>
+</body>
+</html>

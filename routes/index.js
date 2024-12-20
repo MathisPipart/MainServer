@@ -10,11 +10,6 @@ router.get('/releases', function(req, res, next) {
   res.render('pages/releases', { title: 'Releases', release:'2010'});
 });
 
-router.get('/languages', function(req, res, next) {
-  res.render('pages/languages', { title: 'Languages' });
-});
-
-
 router.get('/chat', function(req, res, next) {
   res.render('pages/chat', { title: 'Chat' });
 });
