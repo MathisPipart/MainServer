@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">My Website</a>
+        <a class="navbar-brand" href="/">Rotten Ketchup</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -9,50 +9,61 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/">Home</a>
                 </li>
+                <!-- Dropdown for Genres -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="genresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Genres
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="genresDropdown">
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=action">action</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=adventure">adventure</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=animation">animation</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=comedy">comedy</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=crime">crime</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=documentary">documentary</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=drama">drama</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=family">family</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=history">history</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=horror">horror</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=music">music</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=mystery">mystery</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=romance">romance</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=science fiction">science fiction</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=thriller">thriller</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=tv movie">tv movie</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=war">war</a></li>
-                        <li><a class="dropdown-item" href="/springboot/genres?genre=western">western</a></li>
-                    </ul>
+                    <div class="dropdown-menu p-3" aria-labelledby="genresDropdown" style="min-width: 600px;">
+                        <div class="row g-1">
+                            <div class="col-md-4">
+                                <a class="dropdown-item" href="/springboot/genres?genre=action">Action</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=adventure">Adventure</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=animation">Animation</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=comedy">Comedy</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=crime">Crime</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=documentary">Documentary</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a class="dropdown-item" href="/springboot/genres?genre=drama">Drama</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=family">Family</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=history">History</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=horror">Horror</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=music">Music</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=mystery">Mystery</a>
+                            </div>
+                            <div class="col-md-4">
+                                <a class="dropdown-item" href="/springboot/genres?genre=romance">Romance</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=science fiction">Science Fiction</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=thriller">Thriller</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=tv movie">TV Movie</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=war">War</a>
+                                <a class="dropdown-item" href="/springboot/genres?genre=western">Western</a>
+                            </div>
+                        </div>
+                    </div>
                 </li>
+                <!-- Dropdown for Releases -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="genresDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="releaseDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Releases
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="releaseDropdown">
                         <li><a class="dropdown-item" href="/springboot/releases?date=2000">2000</a></li>
                         <li><a class="dropdown-item" href="/springboot/releases?date=2010">2010</a></li>
+                        <li><a class="dropdown-item" href="/springboot/releases?date=2020">2020</a></li>
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/springboot/languages">Explorer par langue</a>
+                    <a class="nav-link" href="/springboot/languages">Explore by language</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/chat">Chat</a>
                 </li>
             </ul>
             <form class="d-flex" action="/springboot/findByKeyword" method="get">
-                <input class="form-control me-2" type="text" name="name" placeholder="Entrez un mot-clé" required>
-                <button class="btn btn-outline-success" type="submit">Rechercher</button>
+                <input class="form-control me-2" type="text" name="name" placeholder="Start typing your movie.." required>
+                <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
     </div>
