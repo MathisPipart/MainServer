@@ -37,3 +37,20 @@ a {
   background-color: #228B22;
   color: white;
 }
+
+.stars-container {
+  display: flex;
+  gap: 5px; /* Espace entre les étoiles */
+}
+
+.star {
+  width: 24px; /* Largeur d'une étoile */
+  height: 24px; /* Hauteur d'une étoile */
+  background: linear-gradient(to right, gold var(--star-fill), lightgray var(--star-fill));
+  -webkit-mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
+  mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
+  background-clip: border-box;
+  -webkit-mask-composite: destination-in;
+  mask-composite: intersect;
+}
+

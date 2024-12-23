@@ -2,105 +2,104 @@ const express = require('express');
 const axios = require('axios');
 const router = express.Router();
 
-// URL de base de l'API Spring Boot
+// Base URL for the Spring Boot API
 const SPRING_BOOT_API = 'http://localhost:8082';
 
-// Route pour récupérer les films par mot-clé
+// Route to retrieve movies by keyword
 router.get('/findByKeyword', async (req, res) => {
-    const { name } = req.query; // Récupération du mot-clé depuis la requête
+    const { name } = req.query; // Retrieve the keyword from the request
 
     try {
-        // Appel à l'API Spring Boot
+        // Call the Spring Boot API
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByKeyword`, {
             params: { name },
         });
 
-        // Rendu de la vue avec les données des films
-        res.render('pages/resultResearch', { title: 'Résultats de recherche', movies: response.data, keyword: name, error: null });
+        // Render the view with the movie data
+        res.render('pages/resultResearch', { title: 'Search Results', movies: response.data, keyword: name, error: null });
     } catch (error) {
-        console.error('Erreur lors de la récupération des films:', error.message);
+        console.error('Error while retrieving movies:', error.message);
 
-        // En cas d'erreur, transmettre un message d'erreur à la vue
-        res.render('pages/resultResearch', { title: 'Search Error', movies: [], keyword: name, error: 'Erreur lors de la récupération des données ou aucun film trouvé.' });
+        // In case of an error, pass an error message to the view
+        res.render('pages/resultResearch', { title: 'Search Error', movies: [], keyword: name, error: 'Error retrieving data or no movies found.' });
     }
 });
 
 
-// Route pour récupérer les films par genre
+// Route to retrieve movies by genre
 router.get('/genres', async (req, res) => {
-    const { genre } = req.query; // Récupération du genre depuis la requête
+    const { genre } = req.query; // Retrieve the genre from the request
 
     try {
-        // Appel à l'API Spring Boot
+        // Call the Spring Boot API
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByGenre`, {
             params: { genre },
         });
 
-        // Rendu de la vue avec les données des films
+        // Render the view with the movie data
         res.render('pages/genres', {
-            title: `Films pour le genre : ${genre}`,
+            title: `Movies for Genre: ${genre}`,
             movies: response.data,
             genre: genre,
             error: null
         });
     } catch (error) {
-        console.error('Erreur lors de la récupération des films par genre:', error.message);
+        console.error('Error while retrieving movies by genre:', error.message);
 
-        // En cas d'erreur, transmettre un message d'erreur à la vue
+        // In case of an error, pass an error message to the view
         res.render('pages/genres', {
-            title: 'Erreur de recherche',
+            title: 'Search Error',
             movies: [],
             genre: genre,
-            error: 'Erreur lors de la récupération des données ou aucun film trouvé.'
+            error: 'Error retrieving data or no movies found.'
         });
     }
 });
 
-// Route pour récupérer les films par date
+// Route to retrieve movies by date
 router.get('/releases', async (req, res) => {
     const { date } = req.query;
 
     try {
-        // Validation de la date au format YYYY
+        // Validate the date format (YYYY)
         if (!/^\d{4}$/.test(date)) {
             return res.render('pages/releases', {
-                title: 'Recherche par Date',
+                title: 'Search by Date',
                 movies: [],
                 date,
-                error: 'La date saisie est invalide. Format attendu : YYYY.'
+                error: 'Invalid date format. Expected format: YYYY.'
             });
         }
 
-        // Appel à l'API Spring Boot
+        // Call the Spring Boot API
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByDate`, { params: { date } });
 
-        // Rendu de la vue avec les résultats
+        // Render the view with the results
         res.render('pages/releases', {
-            title: `Films de l'année ${date}`,
+            title: `Movies from ${date}`,
             movies: response.data,
             date,
             error: null
         });
     } catch (error) {
-        console.error('Erreur lors de la récupération des films par date :', error.message);
+        console.error('Error while retrieving movies by date:', error.message);
 
-        // Rendu en cas d'erreur
+        // Render the view in case of an error
         res.render('pages/dateResults', {
-            title: 'Erreur de recherche',
+            title: 'Search Error',
             movies: [],
             date,
-            error: 'Erreur lors de la récupération des données ou aucun film trouvé.'
+            error: 'Error retrieving data or no movies found.'
         });
     }
 });
 
-
-// Route principale pour afficher la page et gérer la recherche
+// Main route to display the page and handle the search
 router.get('/languages', async (req, res) => {
     const { selectedLanguage, selectedType } = req.query;
 
     try {
-        // Récupération des langues et types pour le formulaire
+        // Retrieve languages and types for the form
         const languagesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctLanguages`);
         const typesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctTypes`);
 
@@ -109,43 +108,43 @@ router.get('/languages', async (req, res) => {
 
         let movies = null;
 
-        // Si une recherche est effectuée
+        // If a search is performed
         if (selectedLanguage || selectedType) {
             try {
                 const moviesResponse = await axios.get(`${SPRING_BOOT_API}/movies/findMoviesByLanguageAndType`, {
                     params: { selectedLanguage, selectedType },
                 });
 
-                // Regrouper les résultats par movie_id
+                // Group results by movie_id
                 movies = groupMoviesById(moviesResponse.data);
             } catch (searchError) {
-                console.error('Erreur lors de la recherche des films :', searchError.message);
-                movies = []; // Pas de films trouvés ou erreur
+                console.error('Error while searching for movies:', searchError.message);
+                movies = []; // No movies found or error
             }
         }
 
-        // Rendre la vue avec les données, même en cas d'erreur
+        // Render the view with the data, even in case of an error
         res.render('pages/languages', {
-            title: 'Sélectionnez une langue et un type',
+            title: 'Select a Language and Type',
             languages,
             types,
             selectedLanguage,
             selectedType,
             movies,
-            error: null, // Pas d'erreur globale
+            error: null, // No global error
         });
     } catch (error) {
-        console.error('Erreur lors de la récupération des langues ou types :', error.message);
+        console.error('Error while retrieving languages or types:', error.message);
 
-        // Rendre la vue avec une erreur, mais permettre de continuer
+        // Render the view with an error, but allow continuation
         res.render('pages/languages', {
-            title: 'Erreur',
+            title: 'Error',
             languages: [],
             types: [],
             selectedLanguage: null,
             selectedType: null,
             movies: null,
-            error: 'Erreur lors de la récupération des données nécessaires.',
+            error: 'Error retrieving necessary data.',
         });
     }
 });
@@ -175,5 +174,6 @@ function groupMoviesById(data) {
     });
     return Object.values(movies);
 }
+
 
 module.exports = router;

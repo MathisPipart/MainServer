@@ -1,18 +1,43 @@
-<h1>Résultats pour le genre : <%= genre %></h1>
-
 <% if (error) { %>
     <p><%= error %></p>
 <% } else { %>
-    <div id="results">
+    <% function formatDuration(minutes) {
+        if (isNaN(minutes) || minutes === null || minutes === undefined) {
+            return 'No duration available'; // Default message if error
+        }
+        else if (minutes < 60)
+        {
+            return (minutes + "min");
+        }
+        const hours = Math.floor(minutes / 60);
+        const mins = minutes % 60;
+        return `${hours}h${mins > 0 ? mins + 'min' : ''}`;
+    } %>
+    <% function generateStarDisplay(rating) { %>
+        <% if (rating === null || rating === undefined || isNaN(rating)) { %>
+            <p>No rating available</p>
+        <% } else { %>
+            <div class="stars-container">
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <div class="star" style="--star-fill: <%= Math.min(1, Math.max(0, rating - (i - 1))) * 100 %>%;"></div>
+                <% } %>
+            </div>
+        <% } %>
+    <% } %>
+
+    <br>
+    <div id="results" class="ps-3">
         <% movies.forEach(movie => { %>
             <div>
-                <h3>Nom du Film: <%= movie.name %></h3>
-                <p><strong>Date:</strong> <%= movie.date %></p>
-                <p><strong>Tagline:</strong> <%= movie.tagline %></p>
+                <h3><%= movie.name %> (<%= movie.date %>)</h3>
+                <p><%= movie.tagline %></p>
                 <p><strong>Description:</strong> <%= movie.description %></p>
-                <p><strong>Durée (minutes):</strong> <%= movie.minute %></p>
-                <p><strong>Note:</strong> <%= movie.rating %></p>
+                <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
+                <p><strong>Rating:</strong> <%= movie.rating %></p>
+                <%= generateStarDisplay(movie.rating) %>
+                <br>
                 <p><strong>Genres:</strong> <%= movie.genres %></p>
+                <hr>
             </div>
         <% }) %>
     </div>
