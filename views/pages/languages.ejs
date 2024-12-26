@@ -74,12 +74,8 @@
                 <h2><%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)</h2>
                 <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
                 <p><%= movie.tagline %></p>
-                <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
-                <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>
-                <p><strong>Rating:</strong> <%= movie.rating %></p>
-                <%= generateStarDisplay(movie.rating) %>
                 <% if (movie.languages && movie.languages.length > 0) { %>
-                    <h4>Languages:</h4>
+                    <p><strong>Languages:</strong></p>
                     <ul>
                         <% movie.languages.forEach(lang => { %>
                             <li><%= lang.type %>: <%= lang.language %></li>
@@ -88,6 +84,10 @@
                 <% } else { %>
                     <p>No languages found.</p>
                 <% } %>
+                <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
+                <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>
+                <p><strong>Rating:</strong> <%= movie.rating %></p>
+                <%= generateStarDisplay(movie.rating) %>
             </div>
         <hr>
         <% }) %>
