@@ -85,7 +85,7 @@
                     <p>No languages found.</p>
                 <% } %>
                 <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
-                <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>
+                <p><strong>Duration:</strong> <%= formatDuration(movie.duration) || "Duration not available"%></p>
                 <p><strong>Rating:</strong> <%= movie.rating %></p>
                 <%= generateStarDisplay(movie.rating) %>
             </div>
