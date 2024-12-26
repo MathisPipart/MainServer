@@ -41,6 +41,7 @@
       <div>
         <h2><%= movie.name %></h2>
         <p><strong>Date:</strong> <%= movie.date %></p>
+        <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
         <p><%= movie.tagline %></p>
         <p><strong>Description:</strong> <%= movie.description %></p>
         <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>

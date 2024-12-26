@@ -67,12 +67,12 @@
 
 <br>
 
-<!-- Display results -->
 <div id="results" class="ps-3">
     <% if (movies && movies.length > 0) { %>
         <% movies.forEach(movie => { %>
             <div>
                 <h2><%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)</h2>
+                <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
                 <p><%= movie.tagline %></p>
                 <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
                 <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>

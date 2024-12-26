@@ -29,6 +29,7 @@
         <% movies.forEach(movie => { %>
             <div>
                 <h2><%= movie.name %> (<%= movie.date %>)</h2>
+                <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
                 <p> <%= movie.tagline %></p>
                 <p><strong>Description:</strong> <%= movie.description %></p>
                 <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available" %></p>

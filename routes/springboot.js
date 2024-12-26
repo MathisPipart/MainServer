@@ -162,6 +162,7 @@ function groupMoviesById(data) {
                 duration: row[4],
                 rating: row[5],
                 tagline: row[6],
+                link: row[10],
                 languages: [],
             };
         }
