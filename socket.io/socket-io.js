@@ -33,13 +33,12 @@ exports.init = function(io) {
         /**
          * it creates or joins a room
          */
-        socket.on('create or join', function (room, userId) {
-          socket.join(room);
-          socket.broadcast.to(room).emit('joined', room, userId);
+        socket.on('create or join', function (userId) {
+          news.emit('joined', userId);
         });
 
-        socket.on('news', function (room, userId, chatText) {
-          socket.broadcast.to(room).emit('news', room, userId, chatText);
+        socket.on('news', function (userId, newsText) {
+          news.emit('news', userId, newsText);
         });
 
         socket.on('disconnect', function(){
