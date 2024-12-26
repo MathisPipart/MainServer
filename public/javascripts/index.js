@@ -57,15 +57,15 @@ function initChatSocket() {
  * it initialises the socket for /news
  */
 function initNewsSocket(){
-    news.on('joined', function (room, userId) {
+    news.on('joined', function (name, userId) {
             if (userId !== name) {
                 // notifies that someone has joined the room
-                writeOnNewsHistory('<b>'+userId+'</b>' + ' joined news room ' + room);
+                writeOnNewsHistory('<b>'+name+'</b>' + ' joined general room ');
             }
         });
 
     // called when some news is received (note: only news received by others are received)
-    news.on('news', function (room, userId, newsText) {
+    news.on('news', function (userId, newsText) {
         writeOnNewsHistory('<b>' + userId + ':</b> ' + newsText);
     });
 }
@@ -85,7 +85,7 @@ function sendChatText() {
  */
 function sendNewsText() {
     let newsText = document.getElementById('news_input').value;
-    news.emit('news', roomNo, name, newsText);
+    news.emit('news', name, newsText);
     document.getElementById('news_input').value='';
 }
 
@@ -99,7 +99,7 @@ function connectToRoom() {
     name = document.getElementById('name').value;
     if (!name) name = 'Unknown-' + Math.random();
     chat.emit('create or join', roomNo, name);
-    news.emit('create or join', roomNo, name);
+    news.emit('create or join', name);
 }
 
 /**
