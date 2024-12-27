@@ -58,11 +58,11 @@ function initChatSocket() {
  */
 function initNewsSocket(){
     news.on('joined', function (name, userId) {
-            if (userId !== name) {
-                // notifies that someone has joined the room
-                writeOnNewsHistory('<b>'+name+'</b>' + ' joined general room ');
-            }
-        });
+        if (userId !== name) {
+            // notifies that someone has joined the room
+            writeOnNewsHistory('<b>'+name+'</b>' + ' joined general room ');
+        }
+    });
 
     // called when some news is received (note: only news received by others are received)
     news.on('news', function (userId, newsText) {
@@ -99,9 +99,18 @@ function sendChatText() {
  */
 function sendNewsText() {
     let newsText = document.getElementById('news_input').value;
-    news.emit('news', name, newsText);
-    document.getElementById('news_input').value='';
+
+    if (!newsText.trim()) {
+        console.warn('[Client] Le champ de news est vide.');
+        return;
+    }
+
+    console.log(`[Client] Envoi du message "news" : User: ${name}, Message: ${newsText}`);
+    news.emit('news', name, newsText); // Envoi en temps réel
+    saveMessageToMongoDB('0', name, newsText); // Sauvegarde dans la room "0" (news)
+    document.getElementById('news_input').value = '';
 }
+
 
 /**
  * used to connect to a room. It gets the user name and room number from the
@@ -118,6 +127,7 @@ function connectToRoom() {
 
     console.log("CONNECT TO ROOM")
     // Charge l'historique des messages depuis MongoDB
+    loadChatHistory('0'); // Charge les messages "news"
     loadChatHistory(roomNo);
 }
 
@@ -177,9 +187,6 @@ async function saveMessageToMongoDB(room, userId, message) {
 }
 
 
-
-let historyLoaded = {}; // Stocke les rooms pour lesquelles l'historique est déjà chargé
-
 async function loadChatHistory(room) {
     console.log(`[MongoDB] Chargement de l'historique pour la room: ${room}`);
     try {
@@ -191,17 +198,17 @@ async function loadChatHistory(room) {
             } else {
                 console.log('[MongoDB] Historique chargé avec succès. Messages:', messages);
                 messages.forEach(message => {
-                    writeOnChatHistory(`<b>${message.userId}:</b> ${message.message}`);
+                    if (room === '0') {
+                        writeOnNewsHistory(`<b>${message.userId}:</b> ${message.message}`);
+                    } else {
+                        writeOnChatHistory(`<b>${message.userId}:</b> ${message.message}`);
+                    }
                 });
             }
         } else {
-            console.error('[MongoDB] Échec du chargement de l\'historique. Réponse du serveur:', response.status);
+            console.error('[MongoDB] Échec du chargement de l\'historique. Réponse du serveur :', response.status);
         }
     } catch (error) {
-        console.error('[MongoDB] Erreur lors du chargement de l\'historique depuis MongoDB:', error);
+        console.error('[MongoDB] Erreur lors du chargement de l\'historique depuis MongoDB :', error);
     }
 }
-
-
-
-
