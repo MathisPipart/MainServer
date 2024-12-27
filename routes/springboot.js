@@ -15,15 +15,26 @@ router.get('/findByKeyword', async (req, res) => {
             params: { name },
         });
 
-        // Render the view with the movie data
-        res.render('pages/resultResearch', { title: 'Search Results', movies: response.data, keyword: name, error: null });
+        // Render the view with the movie data and the search keyword
+        res.render('pages/resultResearch', {
+            title: 'Search Results',
+            movies: response.data,
+            query: name, // Pass the search keyword to the view
+            error: null
+        });
     } catch (error) {
         console.error('Error while retrieving movies:', error.message);
 
-        // In case of an error, pass an error message to the view
-        res.render('pages/resultResearch', { title: 'Search Error', movies: [], keyword: name, error: 'Error retrieving data or no movies found.' });
+        // In case of an error, pass an error message and the search keyword to the view
+        res.render('pages/resultResearch', {
+            title: 'Search Error',
+            movies: [],
+            query: name, // Pass the search keyword even in case of an error
+            error: 'Error retrieving data or no movies found.'
+        });
     }
 });
+
 
 
 // Route to retrieve movies by genre

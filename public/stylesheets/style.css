@@ -2,10 +2,19 @@ a {
   color: #00B7FF;
 }
 
+body {
+  padding-top: 50px; /* height of the navbar */
+}
+
+h1 {
+  margin-bottom: 10px; /* Reduce space under title */
+}
+
 .boxed {
   width: 100%;
-  padding:10px;
+  padding: 10px;
 }
+
 .bottom {
   position: absolute;
   bottom: 10px;
@@ -25,27 +34,29 @@ a {
   padding-right: 20px;
 }
 
-/* Control the left side */
+/* Control the left side of chat */
 .left {
   left: 0;
   background-color: #ffffff;
+  padding-top: 56px;
 }
 
-/* Control the right side */
+/* Control the right side of chat */
 .right {
   right: 0;
   background-color: #228B22;
   color: white;
+  padding-top: 56px;
 }
 
 .stars-container {
   display: flex;
-  gap: 5px; /* Espace entre les étoiles */
+  gap: 5px; /* Space between stars */
 }
 
 .star {
-  width: 24px; /* Largeur d'une étoile */
-  height: 24px; /* Hauteur d'une étoile */
+  width: 24px; /* Width of a star */
+  height: 24px; /* Height of a star */
   background: linear-gradient(to right, gold var(--star-fill), lightgray var(--star-fill));
   -webkit-mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
   mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
@@ -54,3 +65,36 @@ a {
   mask-composite: intersect;
 }
 
+.movie-container {
+  display: flex; /* Align the poster and text inline */
+  align-items: center; /* Align items vertically */
+  gap: 10px; /* Reduce space between the poster and the text */
+  margin-bottom: 20px; /* Space between movie entries */
+  padding-left: 20px; /* Add space on the left so the poster is not stuck to the edge */
+}
+
+.poster-boxed {
+  flex: 0 0 30%; /* The poster occupies 30% of the width */
+  text-align: center; /* Center content vertically */
+}
+
+.poster-img {
+  max-width: 100%; /* The poster takes up all the available space in its box */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+}
+
+.info {
+  flex: 1; /* Takes up all the remaining space */
+  color: black; /* Text in black */
+  background-color: transparent; /* Remove the green background */
+  padding-right: 20px; /* Add space to the right to separate text from the edge */
+}
+
+.info h2 {
+  margin-top: 0; /* Remove space above the title */
+}
+
+.info p {
+  margin: 5px 0; /* Reduce spacing between paragraphs */
+}
