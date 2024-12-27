@@ -70,9 +70,15 @@
 <div id="results" class="ps-3">
     <% if (movies && movies.length > 0) { %>
         <% movies.forEach(movie => { %>
-            <div>
+        <div class="movie-container">
+            <!-- Poster Section -->
+            <div class="left poster-boxed">
+                <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+            </div>
+
+            <!-- Information Section -->
+            <div class="right info">
                 <h2><%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)</h2>
-                <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
                 <p><%= movie.tagline %></p>
                 <% if (movie.languages && movie.languages.length > 0) { %>
                     <p><strong>Languages:</strong></p>
@@ -88,7 +94,9 @@
                 <p><strong>Duration:</strong> <%= formatDuration(movie.duration) || "Duration not available"%></p>
                 <p><strong>Rating:</strong> <%= movie.rating %></p>
                 <%= generateStarDisplay(movie.rating) %>
+                <br>
             </div>
+        </div>
         <hr>
         <% }) %>
     <% } else if (selectedLanguage || selectedType) { %>

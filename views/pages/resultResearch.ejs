@@ -8,11 +8,14 @@
 </head>
 <body>
 <% if (error) { %>
-  <p style="color: red;"><%= error %></p>
+  <p><%= error %></p>
 <% } else if (movies.length === 0) { %>
   <p>No movies found.</p>
 <% } else { %>
-  <% function formatDuration(minutes) {
+    <% if (query) { %>
+        <h1>Search result for "<%= query %>"</h1>
+    <% } %>
+    <% function formatDuration(minutes) {
     if (isNaN(minutes) || minutes === null || minutes === undefined) {
       return 'Unknown duration'; // Default message if error
     }
@@ -38,16 +41,23 @@
   <br>
   <div id="results" class="ps-3">
     <% movies.forEach(movie => { %>
-      <div>
-        <h2><%= movie.name %></h2>
-        <p><strong>Date:</strong> <%= movie.date %></p>
-        <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
-        <p><%= movie.tagline %></p>
-        <p><strong>Description:</strong> <%= movie.description %></p>
-        <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>
-        <p><strong>Rating:</strong> <%= movie.rating %></p>
-        <%= generateStarDisplay(movie.rating) %>
-        <br>
+      <div class="movie-container">
+          <!-- Poster Section -->
+          <div class="left poster-boxed">
+              <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+          </div>
+
+          <!-- Information Section -->
+          <div class="right info">
+            <h2><%= movie.name %></h2>
+            <p><strong>Date:</strong> <%= movie.date %></p>
+            <p><%= movie.tagline %></p>
+            <p><strong>Description:</strong> <%= movie.description %></p>
+            <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available"%></p>
+            <p><strong>Rating:</strong> <%= movie.rating %></p>
+            <%= generateStarDisplay(movie.rating) %>
+            <br>
+          </div>
       </div>
       <hr>
     <% }); %>

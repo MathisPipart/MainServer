@@ -4,10 +4,8 @@
     <% function formatDuration(minutes) {
         if (isNaN(minutes) || minutes === null || minutes === undefined) {
             return 'No duration available'; // Default message if error
-        }
-        else if (minutes < 60)
-        {
-            return (minutes + "min");
+        } else if (minutes < 60) {
+            return `${minutes}min`;
         }
         const hours = Math.floor(minutes / 60);
         const mins = minutes % 60;
@@ -25,23 +23,26 @@
         <% } %>
     <% } %>
 
-    <br>
     <div id="results" class="ps-3">
         <% movies.forEach(movie => { %>
-            <div>
-                <h3><%= movie.name %> (<%= movie.date %>)</h3>
-                <p><img src="<%= movie.link %>" alt="Poster Film" style="max-width:200px;"/></p>
-                <p><%= movie.tagline %></p>
-                <p><strong>Genres:</strong> <%= movie.genres %></p>
-                <p><strong>Description:</strong> <%= movie.description %></p>
-                <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
-                <p><strong>Rating:</strong> <%= movie.rating %></p>
-                <%= generateStarDisplay(movie.rating) %>
-                <br>
-                <hr>
+            <div class="movie-container">
+                <!-- Poster Section -->
+                <div class="left poster-boxed">
+                    <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                </div>
+
+                <!-- Information Section -->
+                <div class="right info">
+                    <h2><%= movie.name %> (<%= movie.date %>)</h2>
+                    <p><%= movie.tagline %></p>
+                    <p><strong>Genres:</strong> <%= movie.genres %></p>
+                    <p><strong>Description:</strong> <%= movie.description %></p>
+                    <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
+                    <p><strong>Rating:</strong> <%= movie.rating %></p>
+                    <%= generateStarDisplay(movie.rating) %>
+                </div>
             </div>
+            <hr>
         <% }) %>
     </div>
 <% } %>
-
-
