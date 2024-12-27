@@ -77,8 +77,22 @@ function initNewsSocket(){
  */
 function sendChatText() {
     let chatText = document.getElementById('chat_input').value;
+
+    if (!chatText.trim()) {
+        console.warn('[Client] Le champ de message est vide.');
+        return;
+    }
+
+    console.log(`[Client] Envoi du message : Room: ${roomNo}, User: ${name}, Message: ${chatText}`);
+
+    // Envoie le message via Socket.IO
     chat.emit('chat', roomNo, name, chatText);
+
+    // Sauvegarde le message dans MongoDB
+    saveMessageToMongoDB(roomNo, name, chatText);
 }
+
+
 /**
  * called when the Send button is pressed for news. It gets the text to send from the interface
  * and sends the message via  socket
@@ -98,8 +112,13 @@ function connectToRoom() {
     roomNo = document.getElementById('roomNo').value;
     name = document.getElementById('name').value;
     if (!name) name = 'Unknown-' + Math.random();
+    // Connecte aux rooms via Socket.IO
     chat.emit('create or join', roomNo, name);
     news.emit('create or join', name);
+
+    console.log("CONNECT TO ROOM")
+    // Charge l'historique des messages depuis MongoDB
+    loadChatHistory(roomNo);
 }
 
 /**
@@ -137,4 +156,52 @@ function hideLoginInterface(room, userId) {
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }
+
+
+async function saveMessageToMongoDB(room, userId, message) {
+    console.log(`[MongoDB] Tentative de sauvegarde du message dans la room: ${room}, Utilisateur: ${userId}, Message: ${message}`);
+    try {
+        const response = await fetch('http://localhost:3001/chat/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ room, userId, message }),
+        });
+        if (response.ok) {
+            console.log('[MongoDB] Message sauvegardé avec succès dans MongoDB.');
+        } else {
+            console.error('[MongoDB] Échec de la sauvegarde du message dans MongoDB. Réponse du serveur:', response.status);
+        }
+    } catch (error) {
+        console.error('[MongoDB] Erreur lors de la sauvegarde du message dans MongoDB:', error);
+    }
+}
+
+
+
+let historyLoaded = {}; // Stocke les rooms pour lesquelles l'historique est déjà chargé
+
+async function loadChatHistory(room) {
+    console.log(`[MongoDB] Chargement de l'historique pour la room: ${room}`);
+    try {
+        const response = await fetch(`http://localhost:3001/chat/history/${room}`);
+        if (response.ok) {
+            const messages = await response.json();
+            if (messages.length === 0) {
+                console.log(`[Client] Aucun message trouvé pour la room : ${room}`);
+            } else {
+                console.log('[MongoDB] Historique chargé avec succès. Messages:', messages);
+                messages.forEach(message => {
+                    writeOnChatHistory(`<b>${message.userId}:</b> ${message.message}`);
+                });
+            }
+        } else {
+            console.error('[MongoDB] Échec du chargement de l\'historique. Réponse du serveur:', response.status);
+        }
+    } catch (error) {
+        console.error('[MongoDB] Erreur lors du chargement de l\'historique depuis MongoDB:', error);
+    }
+}
+
+
+
 
