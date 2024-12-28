@@ -10,12 +10,44 @@ let news= io.connect('/news');
  * plus the associated actions
  */
 function init() {
-    // it sets up the interface so that userId and room are selected
-    document.getElementById('initial_form').style.display = 'block';
-    document.getElementById('chat_interface').style.display = 'none';
+    const params = getParamsFromURL();
+
+    // Récupère le nom depuis localStorage
+    name = getUserName();
+    roomNo = params.roomNo;
+
+    if (!name) {
+        console.warn('[Client] Aucun nom défini. Veuillez remplir le champ dans le menu pour continuer.');
+        document.getElementById('initial_form').style.display = 'block';
+        document.getElementById('chat_interface').style.display = 'none';
+        return;
+    }
+
+    console.log(`[Client] Initialisation : Room = ${roomNo}, Utilisateur = ${name}`);
+
+    // Si une room est définie, connecte automatiquement
+    if (roomNo) {
+        connectToRoom();
+    }
+
+    // Affiche ou masque les éléments en fonction de la connexion
+    document.getElementById('initial_form').style.display = roomNo ? 'none' : 'block';
+    document.getElementById('chat_interface').style.display = roomNo ? 'block' : 'none';
 
     initChatSocket();
     initNewsSocket();
+}
+
+
+
+
+
+function getParamsFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return {
+        roomNo: params.get('roomNo'),
+        name: params.get('name'),
+    };
 }
 
 
@@ -25,9 +57,18 @@ function init() {
  * so to make sure that the room number is not accidentally repeated across uses
  */
 function generateRoom() {
-    roomNo = Math.round(Math.random() * 10000);
-    document.getElementById('roomNo').value = 'R' + roomNo;
+    const min = 1000001;
+    const max = 1941597;
+
+    // Génère un numéro de room aléatoire
+    roomNo = Math.floor(Math.random() * (max - min + 1)) + min;
+
+    // Remplit le champ roomNo avec la valeur générée
+    document.getElementById('roomNo').value = roomNo;
+
+    console.log(`[Client] Numéro de room généré : ${roomNo}`);
 }
+
 
 /**
  * it initialises the socket for /chat
@@ -118,18 +159,38 @@ function sendNewsText() {
  * It connects both chat and news at the same time
  */
 function connectToRoom() {
-    roomNo = document.getElementById('roomNo').value;
-    name = document.getElementById('name').value;
-    if (!name) name = 'Unknown-' + Math.random();
-    // Connecte aux rooms via Socket.IO
+    // Récupère le nom uniquement depuis localStorage
+    name = getUserName();
+    roomNo = document.getElementById('roomNo')?.value.trim() || roomNo;
+
+    if (!name) {
+        alert('Nom non défini. Veuillez entrer votre nom dans le menu.');
+        return;
+    }
+
+    if (!roomNo) {
+        alert('Numéro de room manquant.');
+        return;
+    }
+
+    console.log(`[Client] Tentative de connexion : Room = ${roomNo}, Utilisateur = ${name}`);
+
+    // Rejoint les rooms via Socket.IO
     chat.emit('create or join', roomNo, name);
     news.emit('create or join', name);
 
-    console.log("CONNECT TO ROOM")
-    // Charge l'historique des messages depuis MongoDB
-    loadChatHistory('0'); // Charge les messages "news"
-    loadChatHistory(roomNo);
+    console.log(`[Client] Connecté à la room : ${roomNo}, utilisateur : ${name}`);
+
+    // Cache le formulaire et affiche l'interface de chat
+    hideLoginInterface(roomNo, name);
+
+    // Charge les historiques
+    loadChatHistory('0'); // Historique général
+    loadChatHistory(roomNo); // Room spécifique
 }
+
+
+
 
 /**
  * it appends the given html text to the history div

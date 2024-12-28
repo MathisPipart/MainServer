@@ -45,6 +45,9 @@
                     <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
                     <p><strong>Rating:</strong> <%= movie.rating %></p>
                     <%= generateStarDisplay(movie.rating) %>
+
+                    <!-- Button to join chat -->
+                    <button onclick="goToChat('<%= movie.id %>')">Rejoindre le chat</button>
                 </div>
             </div>
             <hr>
