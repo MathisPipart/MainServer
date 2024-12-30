@@ -26,7 +26,7 @@ function goToChat(roomId, movieName) {
     }
 
     if (!userName) {
-        alert('Veuillez entrer votre nom avant de rejoindre un chat.');
+        alert('Please enter your name to the right of the menu before joining a chat.');
         return;
     }
 
