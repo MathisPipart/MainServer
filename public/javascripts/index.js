@@ -17,13 +17,6 @@ function init() {
     roomNo = params.roomNo;
     const movieName = params.movieName;
 
-    if (!name) {
-        console.warn('[Client] Aucun nom défini. Veuillez remplir le champ dans le menu pour continuer.');
-        document.getElementById('initial_form').style.display = 'block';
-        document.getElementById('chat_interface').style.display = 'none';
-        return;
-    }
-
     console.log(`[Client] Initialisation : Room = ${roomNo}, Movie = ${movieName}, Utilisateur = ${name}`);
 
     if (roomNo) {
@@ -35,9 +28,6 @@ function init() {
     if (chatTitle) {
         chatTitle.innerHTML = `Chat du Film: ${movieName}`;
     }
-
-    document.getElementById('initial_form').style.display = roomNo ? 'none' : 'block';
-    document.getElementById('chat_interface').style.display = roomNo ? 'block' : 'none';
 
     initChatSocket();
     initNewsSocket();
@@ -227,8 +217,6 @@ function writeOnNewsHistory(text) {
  * @param userId the user name
  */
 function hideLoginInterface(room, userId) {
-    document.getElementById('initial_form').style.display = 'none';
-    document.getElementById('chat_interface').style.display = 'block';
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }

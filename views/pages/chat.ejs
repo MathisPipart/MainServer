@@ -5,19 +5,7 @@
 
 </head>
 <body onload="init()">
-    <div id="initial_form" style="display: block">
-        <p>Veuillez entrer les détails pour rejoindre une room ou utilisez la redirection automatique.</p>
-        <form onsubmit="connectToRoom(); return false;">
-            <p>
-                <label for="roomNo">Numéro de la room :</label>
-                <input type="text" id="roomNo" name="roomNo">
-                <button type="button" id="roomNoGenerator" onclick="generateRoom()">Générer un numéro de room</button>
-            </p>
-            <button type="submit">Rejoindre</button>
-        </form>
-    </div>
-
-    <div id="chat_interface" style="display: none">
+    <div id="chat_interface" style="display: block">
         <div id="chat_container" class="split left">
             <h1 id="chat_title">Chat du Film</h1>
             <div class="mb-3">
