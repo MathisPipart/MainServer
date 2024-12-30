@@ -94,6 +94,11 @@
                 <p><strong>Duration:</strong> <%= formatDuration(movie.duration) || "Duration not available"%></p>
                 <p><strong>Rating:</strong> <%= movie.rating %></p>
                 <%= generateStarDisplay(movie.rating) %>
+
+                <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
+                        class="btn btn-success rounded-pill shadow-sm mt-2">
+                    <i class="bi bi-chat-dots"></i> Join Chat
+                </button>
                 <br>
             </div>
         </div>
