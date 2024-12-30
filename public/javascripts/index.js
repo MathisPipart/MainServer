@@ -9,10 +9,11 @@ let news= io.connect('/news');
  * it initialises the interface and the expected socket messages
  * plus the associated actions
  */
+// Initialisation de la page chat
 function init() {
     const params = getParamsFromURL();
 
-    // Récupère le nom depuis localStorage
+    // Récupère le nom depuis sessionStorage
     name = getUserName();
     roomNo = params.roomNo;
 
@@ -38,10 +39,7 @@ function init() {
     initNewsSocket();
 }
 
-
-
-
-
+// Récupère les paramètres depuis l'URL
 function getParamsFromURL() {
     const params = new URLSearchParams(window.location.search);
     return {
