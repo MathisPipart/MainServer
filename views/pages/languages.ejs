@@ -73,12 +73,18 @@
         <div class="movie-container">
             <!-- Poster Section -->
             <div class="left poster-boxed">
-                <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                <a href="/movieDetails?id=<%= movie.id %>">
+                    <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                </a>
             </div>
 
             <!-- Information Section -->
             <div class="right info">
-                <h2><%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)</h2>
+                <h2>
+                    <a href="/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
+                        <%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)
+                    </a>
+                </h2>
                 <p><%= movie.tagline %></p>
                 <% if (movie.languages && movie.languages.length > 0) { %>
                     <p><strong>Languages:</strong></p>

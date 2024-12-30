@@ -33,12 +33,18 @@
             <div class="movie-container">
                 <!-- Poster Section -->
                 <div class="left poster-boxed">
-                    <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                    <a href="/movieDetails?id=<%= movie.id %>">
+                        <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                    </a>
                 </div>
 
                 <!-- Information Section -->
                 <div class="right info">
-                    <h2><%= movie.name %> (<%= new Date(movie.date).getFullYear() %>)</h2>
+                    <h2>
+                        <a href="/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
+                            <%= movie.name %> (<%= new Date(movie.date).getFullYear() %>)
+                        </a>
+                    </h2>
                     <p><%= movie.tagline %></p>
                     <p><strong>Genres:</strong> <%= movie.genres %></p>
                     <p><strong>Description:</strong> <%= movie.description || 'No description available' %></p>
@@ -50,10 +56,10 @@
                             class="btn btn-success rounded-pill shadow-sm mt-2">
                         <i class="bi bi-chat-dots"></i> Join Chat
                     </button>
-
                 </div>
             </div>
             <hr>
         <% }) %>
     </div>
+
 <% } %>
