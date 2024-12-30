@@ -1,4 +1,3 @@
-// Enregistre le nom d'utilisateur pour cet onglet uniquement
 function setUserName(userName) {
     if (userName) {
         sessionStorage.setItem('userName', userName);
@@ -9,7 +8,6 @@ function setUserName(userName) {
     }
 }
 
-// Récupère le nom d'utilisateur spécifique à cet onglet
 function getUserName() {
     const userName = sessionStorage.getItem('userName') || '';
     if (!userName) {
@@ -18,7 +16,7 @@ function getUserName() {
     return userName;
 }
 
-// Gère la redirection vers le chat
+// Handles chat redirection
 function goToChat(roomId, movieName) {
     const userNameInput = document.getElementById('userName');
     let userName = userNameInput ? userNameInput.value.trim() : '';
@@ -32,15 +30,14 @@ function goToChat(roomId, movieName) {
         return;
     }
 
-    // Enregistre le nom dans cet onglet uniquement
     setUserName(userName);
 
-    // Encode le movieName et redirige vers la page de chat
+    // Encode and redirects to chat page
     window.location.href = `/chat?roomNo=${roomId}&movieName=${encodeURIComponent(movieName)}&name=${encodeURIComponent(userName)}`;
 }
 
 
-// Met à jour le champ userName et synchronise avec sessionStorage
+// Updates userName field and synchronizes with sessionStorage
 function updateUserName() {
     const userNameInput = document.getElementById('userName');
     const userName = userNameInput.value.trim();
@@ -52,17 +49,16 @@ function updateUserName() {
     }
 }
 
-// Initialisation lors du chargement de la page
 document.addEventListener('DOMContentLoaded', () => {
     const userNameInput = document.getElementById('userName');
 
     if (userNameInput) {
         const savedName = getUserName();
         if (savedName) {
-            userNameInput.value = savedName; // Préremplit avec sessionStorage
+            userNameInput.value = savedName;
         }
 
-        // Ajoute un événement pour mettre à jour sessionStorage à chaque saisie
+        // event to update sessionStorage each time it is entered
         userNameInput.addEventListener('input', () => {
             const newName = userNameInput.value.trim();
             setUserName(newName);

@@ -9,7 +9,6 @@ let news= io.connect('/news');
  * it initialises the interface and the expected socket messages
  * plus the associated actions
  */
-// Initialisation de la page chat
 function init() {
     const params = getParamsFromURL();
 
@@ -23,10 +22,9 @@ function init() {
         connectToRoom();
     }
 
-    // Met à jour le titre du chat
     const chatTitle = document.getElementById('chat_title');
     if (chatTitle) {
-        chatTitle.innerHTML = `Chat du Film: ${movieName}`;
+        chatTitle.innerHTML = `Film Chat: ${movieName}`;
     }
 
     initChatSocket();
@@ -34,7 +32,7 @@ function init() {
 }
 
 
-// Récupère les paramètres depuis l'URL
+// Retrieves parameters from URL
 function getParamsFromURL() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -45,36 +43,15 @@ function getParamsFromURL() {
 }
 
 
-
-/**
- * called to generate a random room number
- * This is a simplification. A real world implementation would ask the server to generate a unique room number
- * so to make sure that the room number is not accidentally repeated across uses
- */
-function generateRoom() {
-    const min = 1000001;
-    const max = 1941597;
-
-    // Génère un numéro de room aléatoire
-    roomNo = Math.floor(Math.random() * (max - min + 1)) + min;
-
-    // Remplit le champ roomNo avec la valeur générée
-    document.getElementById('roomNo').value = roomNo;
-
-    console.log(`[Client] Numéro de room généré : ${roomNo}`);
-}
-
-
 /**
  * it initialises the socket for /chat
  */
-
 function initChatSocket() {
     // called when someone joins the room. If it is someone else it notifies the joining of the room
     chat.on('joined', function (room, userId) {
         if (userId === name) {
             // it enters the chat
-            hideLoginInterface(room, userId);
+            DisplayRoom(room, userId);
         } else {
             // notifies that someone has joined the room
             writeOnChatHistory('<b>' + userId + '</b>' + ' joined room ' + room);
@@ -121,10 +98,10 @@ function sendChatText() {
 
     console.log(`[Client] Envoi du message : Room: ${roomNo}, User: ${name}, Message: ${chatText}`);
 
-    // Envoie le message via Socket.IO
+    // Sends message via Socket.IO
     chat.emit('chat', roomNo, name, chatText);
 
-    // Sauvegarde le message dans MongoDB
+    // Save the message in MongoDB
     saveMessageToMongoDB(roomNo, name, chatText);
 }
 
@@ -142,8 +119,8 @@ function sendNewsText() {
     }
 
     console.log(`[Client] Envoi du message "news" : User: ${name}, Message: ${newsText}`);
-    news.emit('news', name, newsText); // Envoi en temps réel
-    saveMessageToMongoDB('0', name, newsText); // Sauvegarde dans la room "0" (news)
+    news.emit('news', name, newsText); // Real-time dispatch
+    saveMessageToMongoDB('0', name, newsText); // Saving in room “0” (news)
     document.getElementById('news_input').value = '';
 }
 
@@ -154,7 +131,6 @@ function sendNewsText() {
  * It connects both chat and news at the same time
  */
 function connectToRoom() {
-    // Récupère le nom uniquement depuis localStorage
     name = getUserName();
     roomNo = document.getElementById('roomNo')?.value.trim() || roomNo;
 
@@ -176,12 +152,10 @@ function connectToRoom() {
 
     console.log(`[Client] Connecté à la room : ${roomNo}, utilisateur : ${name}`);
 
-    // Cache le formulaire et affiche l'interface de chat
-    hideLoginInterface(roomNo, name);
+    DisplayRoom(roomNo, name);
 
-    // Charge les historiques
-    loadChatHistory('0'); // Historique général
-    loadChatHistory(roomNo); // Room spécifique
+    loadChatHistory('0');
+    loadChatHistory(roomNo);
 }
 
 
@@ -216,7 +190,7 @@ function writeOnNewsHistory(text) {
  * @param room the selected room
  * @param userId the user name
  */
-function hideLoginInterface(room, userId) {
+function DisplayRoom(room, userId) {
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }

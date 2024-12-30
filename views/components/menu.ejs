@@ -59,17 +59,16 @@
                 </li>
             </ul>
 
-            <!-- Conteneur centré pour la recherche -->
             <div class="mx-auto" style="width: 400px;">
                 <form class="d-flex" action="/springboot/findByKeyword" method="get">
                     <input class="form-control me-2" type="text" name="name" placeholder="Start typing your movie.." required>
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
             </div>
-            <!-- Champ pour définir le nom aligné à droite -->
+
             <div class="d-flex align-items-center">
                 <label for="userName" class="text-white me-2 mb-0">Name:</label>
-                <input id="userName" class="form-control" type="text" placeholder="Entrez votre nom" aria-label="Votre nom" oninput="updateUserName()" style="max-width: 200px;">
+                <input id="userName" class="form-control" type="text" placeholder="Enter your name" aria-label="Your name" oninput="updateUserName()" style="max-width: 200px;">
             </div>
         </div>
     </div>
