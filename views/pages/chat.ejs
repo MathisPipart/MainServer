@@ -2,59 +2,45 @@
 <html>
 <head>
     <title><%= title %></title>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/javascripts/index.js"></script>
+
 </head>
 <body onload="init()">
+    <div id="chat_interface" style="display: block">
+        <div id="chat_container" class="split left">
+            <h1 id="chat_title">Film Chat</h1>
+            <div class="mb-3">
+                <div id="who_you_are" style="display: inline"></div>,
+                you are in the room :
+                <div id="in_room" style="display: inline"></div>
+            </div>
 
-<h1><%= title %></h1>
-<div id="initial_form" style="display: block">
-    <p>Please insert the id of the Room you want to Join, if you do not have a room id, click Generate Room</p>
-    <form onsubmit="return false;">
-        <p><label for="name"> Your name </label>
-            <input type="text" id="name" name="name">
-        </p>
-        <p>
-            <label for="roomNo"> Your room </label>
-            <input type="text" id="roomNo" name="roomNo">
-            <button id="roomNoGenerator" onclick="generateRoom()">Generate Room</button>
-        </p>
-        <button id="connect" onclick="connectToRoom()">Connect</button>
-    </form>
-</div>
-<div id="chat_interface" style="display: none">
-    <div id="chat_container" class="split left">
-        <h1>Film</h1>
-        <div>
-            <div id="who_you_are" style="display: inline"></div>
-            , you are chatting in room:
-            <div id="in_room" style="display: inline"></div>
+            <!-- Chat history with scrollable content -->
+            <div id="chat_history" class="boxed overflow-auto" style="height: 600px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+            </div>
+
+            <div id="chat_box" class="mt-3">
+                <form onsubmit="sendChatText(); return false;" class="d-flex">
+                    <input type="text" id="chat_input" name="chat_input" class="form-control me-2" placeholder="Your message">
+                    <button type="submit" class="btn btn-primary">Send</button>
+                </form>
+            </div>
         </div>
-        <div id="chat_history" class="boxed"></div>
-        <div id="chat_box" class="bottom boxed">
-            <form onsubmit="return false;" style="width: 100%">
-                <p>
-                    <label for="name"> chat: </label>
-                    <input type="text" id="chat_input" name="chat_input" style="width: 80%">
-                    <button id="chat_send" onclick="sendChatText()">Send</button>
-                </p>
+
+        <div id="news_container" class="split right">
+            <h1>General Chat</h1>
+            <div class="mb-3"> News & Events</div>
+            <!-- News history with scrollable content -->
+            <div id="news_history" class="boxed overflow-auto" style="height: 600px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+            </div>
+
+            <form onsubmit="sendNewsText(); return false;" class="d-flex mt-3">
+                <input type="text" id="news_input" name="news_input" class="form-control me-2" placeholder="Your message">
+                <button type="submit" class="btn btn-secondary">Send</button>
             </form>
         </div>
     </div>
-    <div id="news_container" class="split right">
-        <h1>General</h1>
-        <div id="news_history" class="boxed"></div>
-        <div id="news_box" class="bottom boxed">
-            <form onsubmit="return false;" style="width: 100%">
-                <p>
-                    <label for="name"> news: </label>
-                    <input type="text" id="news_input" name="news_input" style="width: 80%">
-                    <button id="news_send" onclick="sendNewsText()">Send</button>
-                </p>
-            </form>
-        </div>
-    </div>
-</div>
+
 </body>
+
 </html>
 
