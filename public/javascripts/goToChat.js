@@ -19,7 +19,7 @@ function getUserName() {
 }
 
 // Gère la redirection vers le chat
-function goToChat(roomId) {
+function goToChat(roomId, movieName) {
     const userNameInput = document.getElementById('userName');
     let userName = userNameInput ? userNameInput.value.trim() : '';
 
@@ -35,9 +35,10 @@ function goToChat(roomId) {
     // Enregistre le nom dans cet onglet uniquement
     setUserName(userName);
 
-    // Redirige vers la page de chat avec le nom et la room dans l'URL
-    window.location.href = `/chat?roomNo=${roomId}&name=${encodeURIComponent(userName)}`;
+    // Encode le movieName et redirige vers la page de chat
+    window.location.href = `/chat?roomNo=${roomId}&movieName=${encodeURIComponent(movieName)}&name=${encodeURIComponent(userName)}`;
 }
+
 
 // Met à jour le champ userName et synchronise avec sessionStorage
 function updateUserName() {

@@ -13,9 +13,9 @@ let news= io.connect('/news');
 function init() {
     const params = getParamsFromURL();
 
-    // Récupère le nom depuis sessionStorage
     name = getUserName();
     roomNo = params.roomNo;
+    const movieName = params.movieName;
 
     if (!name) {
         console.warn('[Client] Aucun nom défini. Veuillez remplir le champ dans le menu pour continuer.');
@@ -24,14 +24,18 @@ function init() {
         return;
     }
 
-    console.log(`[Client] Initialisation : Room = ${roomNo}, Utilisateur = ${name}`);
+    console.log(`[Client] Initialisation : Room = ${roomNo}, Movie = ${movieName}, Utilisateur = ${name}`);
 
-    // Si une room est définie, connecte automatiquement
     if (roomNo) {
         connectToRoom();
     }
 
-    // Affiche ou masque les éléments en fonction de la connexion
+    // Met à jour le titre du chat
+    const chatTitle = document.getElementById('chat_title');
+    if (chatTitle) {
+        chatTitle.innerHTML = `Chat du Film: ${movieName}`;
+    }
+
     document.getElementById('initial_form').style.display = roomNo ? 'none' : 'block';
     document.getElementById('chat_interface').style.display = roomNo ? 'block' : 'none';
 
@@ -39,14 +43,17 @@ function init() {
     initNewsSocket();
 }
 
+
 // Récupère les paramètres depuis l'URL
 function getParamsFromURL() {
     const params = new URLSearchParams(window.location.search);
     return {
         roomNo: params.get('roomNo'),
         name: params.get('name'),
+        movieName: params.get('movieName'), // Ajout de movieName
     };
 }
+
 
 
 /**

@@ -47,7 +47,8 @@
                     <%= generateStarDisplay(movie.rating) %>
 
                     <!-- Button to join chat -->
-                    <button onclick="goToChat('<%= movie.id %>')">Rejoindre le chat</button>
+                    <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')">Rejoindre le chat</button>
+
                 </div>
             </div>
             <hr>
