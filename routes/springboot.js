@@ -5,6 +5,29 @@ const router = express.Router();
 // Base URL for the Spring Boot API
 const SPRING_BOOT_API = 'http://localhost:8082';
 
+
+router.get('/movieDetails', async (req, res) => {
+    const movieId = req.query.id;
+
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/detailsMovies/findById/${movieId}`);
+
+        res.render('pages/movieDetails', {
+            title: 'Movie Details',
+            movie: response.data,
+            error: null,
+        });
+    } catch (error) {
+        console.error('Erreur lors de la récupération des détails du film :', error.message, error.response?.data);
+        res.render('pages/movieDetails', {
+            title: 'Movie Details',
+            movie: null,
+            error: `Erreur : ${error.message} - ${error.response?.data || 'Aucune donnée reçue'}`,
+        });
+    }
+});
+
+
 // Route to retrieve movies by keyword
 router.get('/findByKeyword', async (req, res) => {
     const { name } = req.query; // Retrieve the keyword from the request
