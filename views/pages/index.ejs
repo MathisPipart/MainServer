@@ -33,7 +33,7 @@
             <div class="movie-container">
                 <!-- Poster Section -->
                 <div class="left poster-boxed">
-                    <a href="/movieDetails?id=<%= movie.id %>">
+                    <a href="/springboot/movieDetails?id=<%= movie.id %>">
                         <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
                     </a>
                 </div>
@@ -41,7 +41,7 @@
                 <!-- Information Section -->
                 <div class="right info">
                     <h2>
-                        <a href="/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
+                        <a href="/springboot/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
                             <%= movie.name %> (<%= movie.date %>)
                         </a>
                     </h2>

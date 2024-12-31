@@ -37,12 +37,5 @@ router.get('/chat', function(req, res, next) {
   res.render('pages/chat', { title: 'Chat' });
 });
 
-router.get('/movieDetails', function(req, res, next) {
-  const movieId = req.query.id; // Récupérer l'ID du film depuis la requête
-  // Vous pouvez récupérer les détails du film en fonction de l'ID ici, par exemple :
-  // const movie = getMovieById(movieId); // Une fonction fictive pour récupérer les données du film
-  res.render('pages/movieDetails', { title: 'movieDetails', movieId }); // Passez l'ID (et potentiellement le film) à la vue
-});
-
 
 module.exports = router;

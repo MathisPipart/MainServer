@@ -6,7 +6,23 @@
     <title><%= title %></title>
 </head>
 <body>
-    <h1>Movie Details</h1>
-    <p>ID du film : <%= movieId %></p>
+    <% if (error) { %>
+        <h1><%= error %></h1>
+    <% } else { %>
+        <h1><%= movie.name %> (<%= movie.date %>)</h1>
+        <img src="<%= movie.link %>" alt="<%= movie.name %>" style="max-width: 100%; height: auto;" />
+        <p><strong>Tagline:</strong> <%= movie.tagline %></p>
+        <p><strong>Description:</strong> <%= movie.description %></p>
+        <p><strong>Duration:</strong> <%= movie.minute %> minutes</p>
+        <p><strong>Rating:</strong> <%= movie.rating %></p>
+        <p><strong>Genres:</strong> <%= movie.genres %></p>
+        <p><strong>Actors:</strong> <%= movie.actors %></p>
+        <p><strong>Countries:</strong> <%= movie.countries %></p>
+        <p><strong>Languages:</strong> <%= movie.languages %></p>
+        <p><strong>Releases:</strong> <%= movie.releases %></p>
+        <p><strong>Studios:</strong> <%= movie.studios %></p>
+        <p><strong>Themes:</strong> <%= movie.themes %></p>
+        <p><strong>Crew:</strong> <%= movie.crew %></p>
+    <% } %>
 </body>
 </html>
