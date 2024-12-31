@@ -52,6 +52,13 @@
             padding: 15px;
             border: 1px solid #dee2e6;
         }
+        .image-container {
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background-color: #f8f9fa;
+            padding: 10px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -62,7 +69,7 @@
             </div>
         <% } else { %>
             <div class="movie-header">
-                <img src="<%= movie.link %>" alt="<%= movie.name %>">
+                <img class="poster-img" src="<%= movie.link %>" alt="<%= movie.name %>">
                 <div class="movie-info">
                     <h1><%= movie.name %> (<%= movie.date %>)</h1>
                     <p class="text-warning"><strong>Tagline:</strong> <%= movie.tagline %></p>
