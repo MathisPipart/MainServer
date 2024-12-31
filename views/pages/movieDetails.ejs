@@ -119,16 +119,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% movie.actors.split(',').forEach(actor => {
-                                        const match = actor.match(/\((.*?)\)/);
-                                        const role = match ? match[1] : 'Unknown Role';
-                                        const name = actor.replace(/\(.*?\)/, '').trim();
+                                    <%
+                                        if (movie.actors && movie.actors.trim().length > 0) {
+                                            movie.actors.split(',').forEach(actor => {
+                                                const match = actor.match(/\((.*?)\)/);
+                                                const role = match ? match[1] : 'Unknown Role';
+                                                const name = actor.replace(/\(.*?\)/, '').trim();
                                     %>
                                         <tr>
                                             <td><%= role %></td>
                                             <td><%= name %></td>
                                         </tr>
-                                    <% }) %>
+                                    <%
+                                            });
+                                        } else {
+                                    %>
+                                        <tr>
+                                            <td colspan="2" class="text-center">No actor data available</td>
+                                        </tr>
+                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
@@ -145,21 +154,31 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% movie.crew.split(',').forEach(member => {
-                                        const match = member.match(/\((.*?)\)/);
-                                        const role = match ? match[1] : 'Unknown Role';
-                                        const name = member.replace(/\(.*?\)/, '').trim();
+                                    <%
+                                        if (movie.crew && movie.crew.trim().length > 0) {
+                                            movie.crew.split(',').forEach(member => {
+                                                const match = member.match(/\((.*?)\)/);
+                                                const role = match ? match[1] : 'Unknown Role';
+                                                const name = member.replace(/\(.*?\)/, '').trim();
                                     %>
                                         <tr>
                                             <td><%= role %></td>
                                             <td><%= name %></td>
                                         </tr>
-                                    <% }) %>
+                                    <%
+                                            });
+                                        } else {
+                                    %>
+                                        <tr>
+                                            <td colspan="2" class="text-center">No crew data available</td>
+                                        </tr>
+                                    <% } %>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="row mt-4">
                     <div class="col-md-6">
