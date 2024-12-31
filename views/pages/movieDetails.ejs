@@ -4,25 +4,218 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= title %></title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffffff;
+            color: #000000;
+            font-family: Arial, sans-serif;
+        }
+        .movie-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .movie-header img {
+            border-radius: 10px;
+            max-width: 300px;
+            margin-right: 20px;
+        }
+        .movie-info h1 {
+            font-size: 2.5rem;
+        }
+        .movie-info p {
+            margin: 5px 0;
+        }
+        .badge {
+            font-size: 0.9rem;
+        }
+        .scrollable-container {
+            max-height: 300px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+        }
+        .list-group-item {
+            border: none;
+            background-color: transparent;
+        }
+        .table-header {
+            font-weight: bold;
+            background-color: #e9ecef;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .grid-item {
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+    </style>
 </head>
 <body>
-    <% if (error) { %>
-        <h1><%= error %></h1>
-    <% } else { %>
-        <h1><%= movie.name %> (<%= movie.date %>)</h1>
-        <img src="<%= movie.link %>" alt="<%= movie.name %>" style="max-width: 100%; height: auto;" />
-        <p><strong>Tagline:</strong> <%= movie.tagline %></p>
-        <p><strong>Description:</strong> <%= movie.description %></p>
-        <p><strong>Duration:</strong> <%= movie.minute %> minutes</p>
-        <p><strong>Rating:</strong> <%= movie.rating %></p>
-        <p><strong>Genres:</strong> <%= movie.genres %></p>
-        <p><strong>Actors:</strong> <%= movie.actors %></p>
-        <p><strong>Countries:</strong> <%= movie.countries %></p>
-        <p><strong>Languages:</strong> <%= movie.languages %></p>
-        <p><strong>Releases:</strong> <%= movie.releases %></p>
-        <p><strong>Studios:</strong> <%= movie.studios %></p>
-        <p><strong>Themes:</strong> <%= movie.themes %></p>
-        <p><strong>Crew:</strong> <%= movie.crew %></p>
-    <% } %>
+    <div class="container py-5">
+        <% if (error) { %>
+            <div class="alert alert-danger text-center">
+                <h1><%= error %></h1>
+            </div>
+        <% } else { %>
+            <div class="movie-header">
+                <img src="<%= movie.link %>" alt="<%= movie.name %>">
+                <div class="movie-info">
+                    <h1><%= movie.name %> (<%= movie.date %>)</h1>
+                    <p class="text-warning"><strong>Tagline:</strong> <%= movie.tagline %></p>
+                    <p><strong>Rating:</strong> <span class="badge bg-success"><%= movie.rating %></span></p>
+                    <p><strong>Duration:</strong> <%= movie.minute %> minutes</p>
+                    <p><strong>Genres:</strong> <span class="badge bg-primary"><%= movie.genres %></span></p>
+                    <br>
+                    <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
+                            class="btn btn-success rounded-pill shadow-sm mt-2">
+                        <i class="bi bi-chat-dots"></i> Join Chat
+                    </button>
+                </div>
+            </div>
+
+            <div class="movie-details">
+                <h3 class="text-uppercase text-primary">About the movie</h3>
+                <p><%= movie.description %></p>
+
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <h4 class="text-secondary">Languages</h4>
+                        <p><%= movie.languages %></p>
+                    </div>
+                    <div class="grid-item">
+                        <h4 class="text-secondary">Countries</h4>
+                        <p><%= movie.countries %></p>
+                    </div>
+                    <div class="grid-item">
+                        <h4 class="text-secondary">Themes</h4>
+                        <p><%= movie.themes %></p>
+                    </div>
+                    <div class="grid-item">
+                        <h4 class="text-secondary">Studios</h4>
+                        <p><%= movie.studios %></p>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h4 class="text-secondary">Actors</h4>
+                        <div class="scrollable-container">
+                            <table class="table">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>Role</th>
+                                        <th>Actor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% movie.actors.split(',').forEach(actor => {
+                                        const match = actor.match(/\((.*?)\)/);
+                                        const role = match ? match[1] : 'Unknown Role';
+                                        const name = actor.replace(/\(.*?\)/, '').trim();
+                                    %>
+                                        <tr>
+                                            <td><%= role %></td>
+                                            <td><%= name %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <h4 class="text-secondary">Crew</h4>
+                        <div class="scrollable-container">
+                            <table class="table">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>Role</th>
+                                        <th>Crew Member</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% movie.crew.split(',').forEach(member => {
+                                        const match = member.match(/\((.*?)\)/);
+                                        const role = match ? match[1] : 'Unknown Role';
+                                        const name = member.replace(/\(.*?\)/, '').trim();
+                                    %>
+                                        <tr>
+                                            <td><%= role %></td>
+                                            <td><%= name %></td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <h4 class="text-secondary">Releases</h4>
+                        <div class="scrollable-container">
+                            <table class="table">
+                                <thead class="table-header">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Country</th>
+                                        <th>Method</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <%
+                                        if (movie.releases) {
+                                            const releasesArray = movie.releases.split(',').map(release => {
+                                                const match = release.match(/(\d{4}-\d{2}-\d{2})\s+in\s+(.+?)\s+\((.+?)\)/);
+                                                return match ? {
+                                                    date: match[1],
+                                                    country: match[2],
+                                                    method: match[3]
+                                                } : null;
+                                            }).filter(release => release !== null);
+
+                                            // Trier par date croissante
+                                            releasesArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                                            releasesArray.forEach(release => {
+                                    %>
+                                        <tr>
+                                            <td><%= release.date %></td>
+                                            <td><%= release.country %></td>
+                                            <td><%= release.method %></td>
+                                        </tr>
+                                    <%
+                                            });
+                                        } else {
+                                    %>
+                                        <tr>
+                                            <td colspan="3" class="text-center">No release data available</td>
+                                        </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
