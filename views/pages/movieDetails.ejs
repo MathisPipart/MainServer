@@ -216,7 +216,7 @@
                                                 } : null;
                                             }).filter(release => release !== null);
 
-                                            // Trier par date croissante
+                                            // Sort by ascending date
                                             releasesArray.sort((a, b) => new Date(a.date) - new Date(b.date));
 
                                             releasesArray.forEach(release => {

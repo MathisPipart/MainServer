@@ -1,17 +1,17 @@
 function setUserName(userName) {
     if (userName) {
         sessionStorage.setItem('userName', userName);
-        console.log(`[Client] Nom défini pour cet onglet : ${userName}`);
+        console.log(`[Client] Name set for this tab: ${userName}`);
     } else {
         sessionStorage.removeItem('userName');
-        console.log('[Client] Nom supprimé pour cet onglet.');
+        console.log('[Client] Name removed for this tab.');
     }
 }
 
 function getUserName() {
     const userName = sessionStorage.getItem('userName') || '';
     if (!userName) {
-        console.log('[Client] Aucun nom trouvé dans cet onglet.');
+        console.log('[Client] No name found for this tab.');
     }
     return userName;
 }
@@ -22,7 +22,7 @@ function goToChat(roomId, movieName) {
     let userName = userNameInput ? userNameInput.value.trim() : '';
 
     if (!userName) {
-        userName = getUserName(); // Récupère le nom pour cet onglet
+        userName = getUserName(); // Retrieves the name for this tab
     }
 
     if (!userName) {
@@ -32,7 +32,7 @@ function goToChat(roomId, movieName) {
 
     setUserName(userName);
 
-    // Encode and redirects to chat page
+    // Encodes and redirects to the chat page
     window.location.href = `/chat?roomNo=${roomId}&movieName=${encodeURIComponent(movieName)}&name=${encodeURIComponent(userName)}`;
 }
 
@@ -43,9 +43,9 @@ function updateUserName() {
     const userName = userNameInput.value.trim();
 
     if (userName) {
-        setUserName(userName); // Met à jour sessionStorage
+        setUserName(userName); // Updates sessionStorage
     } else {
-        sessionStorage.removeItem('userName'); // Supprime si vide
+        sessionStorage.removeItem('userName'); // Removes it if empty
     }
 }
 

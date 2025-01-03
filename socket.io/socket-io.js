@@ -10,11 +10,11 @@ exports.init = function(io) {
            */
           socket.on('create or join', function (room, userId) {
             socket.join(room);
-            chat.to(room).emit('joined', room, userId); // Notifie tous les utilisateurs dans la room
+            chat.to(room).emit('joined', room, userId); // Notifies all users in the room
           });
 
           socket.on('chat', function (room, userId, chatText) {
-            chat.to(room).emit('chat', room, userId, chatText); // Diffuse le message dans la room
+            chat.to(room).emit('chat', room, userId, chatText); // Broadcasts the message in the room
           });
 
           socket.on('disconnect', function(){
@@ -34,7 +34,7 @@ exports.init = function(io) {
            * it creates or joins a room
            */
           socket.on('news', function (userId, newsText) {
-            news.emit('news', userId, newsText); // Diffuse les messages de news
+            news.emit('news', userId, newsText); // Broadcasts news messages
           });
 
           socket.on('disconnect', function(){

@@ -16,7 +16,7 @@ function init() {
     roomNo = params.roomNo;
     const movieName = params.movieName;
 
-    console.log(`[Client] Initialisation : Room = ${roomNo}, Movie = ${movieName}, Utilisateur = ${name}`);
+    console.log(`[Client] Initialisation : Room = ${roomNo}, Movie = ${movieName}, User = ${name}`);
 
     if (roomNo) {
         connectToRoom();
