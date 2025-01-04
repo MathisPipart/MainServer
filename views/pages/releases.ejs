@@ -59,6 +59,13 @@
         <hr>
         <% }) %>
     </div>
+
+    <%- include('../components/pagination', {
+      baseUrl: '/springboot/releases',
+      queryString: `date=${date}&`,
+      currentPage: currentPage
+    }) %>
+
 <% } else { %>
     <p>No movies found for this year.</p>
 <% } %>
