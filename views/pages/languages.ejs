@@ -115,11 +115,13 @@
         <% } %>
     </div>
 
-    <%- include('../components/pagination', {
-      baseUrl: '/springboot/languages',
-      queryString: `selectedLanguage=${selectedLanguage}&selectedType=${selectedType}&`,
-      currentPage: currentPage
-    }) %>
+    <% if (movies && movies.length >= 20) { %>
+        <%- include('../components/pagination', {
+          baseUrl: '/springboot/languages',
+          queryString: `selectedLanguage=${selectedLanguage}&selectedType=${selectedType}&`,
+          currentPage: currentPage
+        }) %>
+    <% } %>
 
 </body>
 </html>
