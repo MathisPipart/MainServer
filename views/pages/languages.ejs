@@ -31,88 +31,95 @@
     <% } %>
 <% } %>
 
-<h1><%= title %></h1>
-<!-- Display general errors -->
-<% if (error) { %>
-    <p style="color: red;"><%= error %></p>
-<% } %>
-
-<!-- Form to select language and type -->
-<form id="language-form" action="/springboot/languages" method="get">
-    <label for="type-select">Available Types:</label>
-    <select id="type-select" name="selectedType">
-        <option value="">-- Select a type --</option>
-        <% if (types && types.length > 0) { %>
-            <% types.forEach(type => { %>
-                <option value="<%= type %>" <%= selectedType === type ? 'selected' : '' %>><%= type %></option>
-            <% }) %>
-        <% } else { %>
-            <option value="" disabled>No types available</option>
-        <% } %>
-    </select>
-
-    <label for="language-select">Available Languages:</label>
-    <select id="language-select" name="selectedLanguage">
-        <option value="">-- Select a language --</option>
-        <% if (languages && languages.length > 0) { %>
-            <% languages.forEach(language => { %>
-                <option value="<%= language %>" <%= selectedLanguage === language ? 'selected' : '' %>><%= language %></option>
-            <% }) %>
-        <% } else { %>
-            <option value="" disabled>No languages available</option>
-        <% } %>
-    </select>
-    <button type="submit">Search</button>
-</form>
-
-<br>
-
-<div id="results" class="ps-3">
-    <% if (movies && movies.length > 0) { %>
-        <% movies.forEach(movie => { %>
-        <div class="movie-container">
-            <!-- Poster Section -->
-            <div class="left poster-boxed">
-                <a href="/springboot/movieDetails?id=<%= movie.id %>">
-                    <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
-                </a>
-            </div>
-
-            <!-- Information Section -->
-            <div class="right info">
-                <h2>
-                    <a href="/springboot/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
-                        <%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)
-                    </a>
-                </h2>
-                <p><%= movie.tagline %></p>
-                <% if (movie.languages && movie.languages.length > 0) { %>
-                    <p><strong>Languages:</strong></p>
-                    <ul>
-                        <% movie.languages.forEach(lang => { %>
-                            <li><%= lang.type %>: <%= lang.language %></li>
-                        <% }) %>
-                    </ul>
-                <% } else { %>
-                    <p>No languages found.</p>
-                <% } %>
-                <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
-                <p><strong>Duration:</strong> <%= formatDuration(movie.duration) || "Duration not available"%></p>
-                <p><strong>Rating:</strong> <%= movie.rating %></p>
-                <%= generateStarDisplay(movie.rating) %>
-
-                <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
-                        class="btn btn-success rounded-pill shadow-sm mt-2">
-                    <i class="bi bi-chat-dots"></i> Join Chat
-                </button>
-                <br>
-            </div>
-        </div>
-        <hr>
-        <% }) %>
-    <% } else if (selectedLanguage || selectedType) { %>
-        <p>No movies found for this search.</p>
+    <h1><%= title %></h1>
+    <!-- Display general errors -->
+    <% if (error) { %>
+        <p style="color: red;"><%= error %></p>
     <% } %>
-</div>
+
+    <!-- Form to select language and type -->
+    <form id="language-form" action="/springboot/languages" method="get">
+        <label for="type-select">Available Types:</label>
+        <select id="type-select" name="selectedType">
+            <option value="">-- Select a type --</option>
+            <% if (types && types.length > 0) { %>
+                <% types.forEach(type => { %>
+                    <option value="<%= type %>" <%= selectedType === type ? 'selected' : '' %>><%= type %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="" disabled>No types available</option>
+            <% } %>
+        </select>
+
+        <label for="language-select">Available Languages:</label>
+        <select id="language-select" name="selectedLanguage">
+            <option value="">-- Select a language --</option>
+            <% if (languages && languages.length > 0) { %>
+                <% languages.forEach(language => { %>
+                    <option value="<%= language %>" <%= selectedLanguage === language ? 'selected' : '' %>><%= language %></option>
+                <% }) %>
+            <% } else { %>
+                <option value="" disabled>No languages available</option>
+            <% } %>
+        </select>
+        <button type="submit">Search</button>
+    </form>
+
+    <br>
+
+    <div id="results" class="ps-3">
+        <% if (movies && movies.length > 0) { %>
+            <% movies.forEach(movie => { %>
+            <div class="movie-container">
+                <!-- Poster Section -->
+                <div class="left poster-boxed">
+                    <a href="/springboot/movieDetails?id=<%= movie.id %>">
+                        <img src="<%= movie.link %>" alt="Poster Film" class="poster-img" />
+                    </a>
+                </div>
+
+                <!-- Information Section -->
+                <div class="right info">
+                    <h2>
+                        <a href="/springboot/movieDetails?id=<%= movie.id %>" style="text-decoration: none; color: inherit;">
+                            <%= movie.name || "Name not available" %> (<%= movie.date || "Unknown date" %>)
+                        </a>
+                    </h2>
+                    <p><%= movie.tagline %></p>
+                    <% if (movie.languages && movie.languages.length > 0) { %>
+                        <p><strong>Languages:</strong></p>
+                        <ul>
+                            <% movie.languages.forEach(lang => { %>
+                                <li><%= lang.type %>: <%= lang.language %></li>
+                            <% }) %>
+                        </ul>
+                    <% } else { %>
+                        <p>No languages found.</p>
+                    <% } %>
+                    <p><strong> Description:</strong> <%= movie.description || "Not available" %></p>
+                    <p><strong>Duration:</strong> <%= formatDuration(movie.duration) || "Duration not available"%></p>
+                    <p><strong>Rating:</strong> <%= movie.rating %></p>
+                    <%= generateStarDisplay(movie.rating) %>
+
+                    <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
+                            class="btn btn-success rounded-pill shadow-sm mt-2">
+                        <i class="bi bi-chat-dots"></i> Join Chat
+                    </button>
+                    <br>
+                </div>
+            </div>
+            <hr>
+            <% }) %>
+        <% } else if (selectedLanguage || selectedType) { %>
+            <p>No movies found for this search.</p>
+        <% } %>
+    </div>
+
+    <%- include('../components/pagination', {
+      baseUrl: '/springboot/languages',
+      queryString: `selectedLanguage=${selectedLanguage}&selectedType=${selectedType}&`,
+      currentPage: currentPage
+    }) %>
+
 </body>
 </html>

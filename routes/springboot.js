@@ -29,29 +29,29 @@ router.get('/movieDetails', async (req, res) => {
 
 // Route to retrieve movies by keyword
 router.get('/findByKeyword', async (req, res) => {
-    const { name } = req.query; // Retrieve the keyword from the request
+    const { name, page } = req.query; // Récupérer le mot-clé et la page
+    const currentPage = parseInt(page) || 0;
 
     try {
-        // Call the Spring Boot API
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByKeyword`, {
-            params: { name },
+            params: { name, page: currentPage, size: 20 },
         });
 
-        // Render the view with the movie data and the search keyword
         res.render('pages/resultResearch', {
             title: 'Search Results',
             movies: response.data,
-            query: name, // Pass the search keyword to the view
+            query: name,
+            currentPage: currentPage,
             error: null
         });
     } catch (error) {
         console.error('Error while retrieving movies:', error.message);
 
-        // In case of an error, pass an error message and the search keyword to the view
         res.render('pages/resultResearch', {
             title: 'Search Error',
             movies: [],
-            query: name, // Pass the search keyword even in case of an error
+            query: name,
+            currentPage: currentPage,
             error: 'Error retrieving data or no movies found.'
         });
     }
@@ -92,7 +92,8 @@ router.get('/genres', async (req, res) => {
 
 // Route to retrieve movies by date
 router.get('/releases', async (req, res) => {
-    const { date } = req.query;
+    const { date, page } = req.query;
+    const currentPage = parseInt(page) || 0;
 
     try {
         // Validate the date format (YYYY)
@@ -101,28 +102,31 @@ router.get('/releases', async (req, res) => {
                 title: 'Search by Date',
                 movies: [],
                 date,
+                currentPage,
                 error: 'Invalid date format. Expected format: YYYY.'
             });
         }
 
         // Call the Spring Boot API
-        const response = await axios.get(`${SPRING_BOOT_API}/movies/findByDate`, { params: { date } });
+        const response = await axios.get(`${SPRING_BOOT_API}/movies/findByDate`, {
+            params: { date, page: currentPage, size: 20 }
+        });
 
-        // Render the view with the results
         res.render('pages/releases', {
             title: `Movies from ${date}`,
             movies: response.data,
             date,
+            currentPage,
             error: null
         });
     } catch (error) {
         console.error('Error while retrieving movies by date:', error.message);
 
-        // Render the view in case of an error
-        res.render('pages/dateResults', {
+        res.render('pages/releases', {
             title: 'Search Error',
             movies: [],
             date,
+            currentPage,
             error: 'Error retrieving data or no movies found.'
         });
     }
@@ -130,7 +134,8 @@ router.get('/releases', async (req, res) => {
 
 // Main route to display the page and handle the search
 router.get('/languages', async (req, res) => {
-    const { selectedLanguage, selectedType } = req.query;
+    const { selectedLanguage, selectedType, page } = req.query;
+    const currentPage = parseInt(page) || 0;
 
     try {
         // Retrieve languages and types for the form
@@ -146,10 +151,9 @@ router.get('/languages', async (req, res) => {
         if (selectedLanguage || selectedType) {
             try {
                 const moviesResponse = await axios.get(`${SPRING_BOOT_API}/movies/findMoviesByLanguageAndType`, {
-                    params: { selectedLanguage, selectedType },
+                    params: { selectedLanguage, selectedType, page: currentPage, size: 20 },
                 });
 
-                // Group results by movie_id
                 movies = groupMoviesById(moviesResponse.data);
             } catch (searchError) {
                 console.error('Error while searching for movies:', searchError.message);
@@ -157,26 +161,26 @@ router.get('/languages', async (req, res) => {
             }
         }
 
-        // Render the view with the data, even in case of an error
         res.render('pages/languages', {
             title: 'Select a Language and Type',
             languages,
             types,
             selectedLanguage,
             selectedType,
+            currentPage,
             movies,
-            error: null, // No global error
+            error: null,
         });
     } catch (error) {
         console.error('Error while retrieving languages or types:', error.message);
 
-        // Render the view with an error, but allow continuation
         res.render('pages/languages', {
             title: 'Error',
             languages: [],
             types: [],
             selectedLanguage: null,
             selectedType: null,
+            currentPage: 0,
             movies: null,
             error: 'Error retrieving necessary data.',
         });

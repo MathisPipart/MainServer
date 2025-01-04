@@ -76,6 +76,11 @@
   </div>
 <% } %>
 
-<a href="/">Back to homepage</a>
+    <%- include('../components/pagination', {
+      baseUrl: '/springboot/findByKeyword',
+      queryString: `name=${query}&`,
+      currentPage: currentPage
+    }) %>
+
 </body>
 </html>
