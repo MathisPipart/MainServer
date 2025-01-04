@@ -27,7 +27,6 @@ router.get('/movieDetails', async (req, res) => {
     }
 });
 
-
 // Route to retrieve movies by keyword
 router.get('/findByKeyword', async (req, res) => {
     const { name } = req.query; // Retrieve the keyword from the request
@@ -57,8 +56,6 @@ router.get('/findByKeyword', async (req, res) => {
         });
     }
 });
-
-
 
 // Route to retrieve movies by genre
 router.get('/genres', async (req, res) => {

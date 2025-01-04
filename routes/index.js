@@ -6,25 +6,27 @@ var router = express.Router();
 const SPRING_BOOT_API = 'http://localhost:8082';
 // GET home page
 router.get('/', async function (req, res) {
-  try {
-    // Fetch the top 50 rated movies from the API
-    const response = await axios.get(`${SPRING_BOOT_API}/movies/topRated`);
+  const page = parseInt(req.query.page) || 0;
 
-    // Render the home page with the fetched movies
+  try {
+    const response = await axios.get(`${SPRING_BOOT_API}/movies/topRated`, {
+      params: { page, size: 50 },
+    });
+
     res.render('pages/index', {
       title: 'Rotten Ketchup',
       movies: response.data,
-      error: null
+      currentPage: page,
+      error: null,
     });
-  }
-  catch (error) {
+  } catch (error) {
     console.error('Error fetching top-rated movies:', error.message);
 
-    // Render the home page with an error message if the API call fails
     res.render('pages/index', {
       title: 'Rotten Ketchup',
       movies: [],
-      error: 'Failed to fetch top-rated movies.'
+      currentPage: page,
+      error: 'Failed to fetch top-rated movies.',
     });
   }
 });
