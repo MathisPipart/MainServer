@@ -59,33 +59,36 @@ router.get('/findByKeyword', async (req, res) => {
 
 // Route to retrieve movies by genre
 router.get('/genres', async (req, res) => {
-    const { genre } = req.query; // Retrieve the genre from the request
+    const { genre, page } = req.query; // Récupérez le genre et la page
+    const currentPage = parseInt(page) || 0;
 
     try {
-        // Call the Spring Boot API
+        // Appel à l'API Spring Boot
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByGenre`, {
-            params: { genre },
+            params: { genre, page: currentPage, size: 20 },
         });
 
-        // Render the view with the movie data
+        // Rendre la vue avec les données paginées
         res.render('pages/genres', {
             title: `Movies for Genre: ${genre}`,
             movies: response.data,
-            genre: genre,
-            error: null
+            genre,
+            currentPage,
+            error: null,
         });
     } catch (error) {
         console.error('Error while retrieving movies by genre:', error.message);
 
-        // In case of an error, pass an error message to the view
         res.render('pages/genres', {
             title: 'Search Error',
             movies: [],
-            genre: genre,
-            error: 'Error retrieving data or no movies found.'
+            genre,
+            currentPage,
+            error: 'Error retrieving data or no movies found.',
         });
     }
 });
+
 
 // Route to retrieve movies by date
 router.get('/releases', async (req, res) => {

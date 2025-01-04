@@ -4,13 +4,14 @@ var router = express.Router();
 
 // Base URL for the Spring Boot API
 const SPRING_BOOT_API = 'http://localhost:8082';
+
 // GET home page
 router.get('/', async function (req, res) {
   const page = parseInt(req.query.page) || 0;
 
   try {
     const response = await axios.get(`${SPRING_BOOT_API}/movies/topRated`, {
-      params: { page, size: 50 },
+      params: { page, size: 20 },
     });
 
     res.render('pages/index', {

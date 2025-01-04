@@ -52,4 +52,13 @@
             <hr>
         <% }) %>
     </div>
+
+
+    <%- include('../components/pagination', {
+      baseUrl: '/springboot/genres',
+      queryString: `genre=${genre}&`,
+      currentPage: currentPage
+    }) %>
+
+
 <% } %>
