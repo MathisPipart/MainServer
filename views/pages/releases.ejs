@@ -1,29 +1,7 @@
 <% if (error) { %>
     <p><%= error %></p>
 <% } else if (movies && movies.length > 0) { %>
-    <% function formatDuration(minutes) {
-        if (isNaN(minutes) || minutes === null || minutes === undefined) {
-            return 'Unknown duration'; // Default message if error
-        }
-        else if (minutes < 60)
-        {
-            return (minutes + "min");
-        }
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-        return `${hours}h${mins > 0 ? mins + 'min' : ''}`;
-    } %>
-    <% function generateStarDisplay(rating) { %>
-        <% if (rating === null || rating === undefined || isNaN(rating)) { %>
-            <p>No rating available</p>
-        <% } else { %>
-            <div class="stars-container">
-                <% for (let i = 1; i <= 5; i++) { %>
-                    <div class="star" style="--star-fill: <%= Math.min(1, Math.max(0, rating - (i - 1))) * 100 %>%;"></div>
-                <% } %>
-            </div>
-        <% } %>
-    <% } %>
+
     <br>
     <div id="results" class="ps-3">
         <% movies.forEach(movie => { %>
@@ -47,7 +25,9 @@
                 <p><strong>Description:</strong> <%= movie.description %></p>
                 <p><strong>Duration:</strong> <%= formatDuration(movie.minute) || "Duration not available" %></p>
                 <p><strong>Rating:</strong> <%= movie.rating %></p>
-                <%= generateStarDisplay(movie.rating) %>
+                <div>
+                    <%- generateStarDisplay(movie.rating) %>
+                </div>
 
                 <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
                         class="btn btn-success rounded-pill shadow-sm mt-2">

@@ -44,4 +44,10 @@ app.use(function(err, req, res, next) {
   res.render('pages/error', { title: 'Error' });
 });
 
+const utils = require('./public/javascripts/utils');
+
+app.locals.formatDuration = utils.formatDuration;
+app.locals.generateStarDisplay = utils.generateStarDisplay;
+
+
 module.exports = app;
