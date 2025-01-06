@@ -217,6 +217,14 @@ async function saveMessageToMongoDB(room, userId, message) {
 
 async function loadChatHistory(room) {
     console.log(`[MongoDB] Chargement de l'historique pour la room: ${room}`);
+
+    // Affiche le message de chargement
+    if (room === '0') {
+        showNewsLoading();
+    } else {
+        showChatLoading();
+    }
+
     try {
         const response = await fetch(`http://localhost:3001/chat/history/${room}`);
         if (response.ok) {
@@ -238,5 +246,31 @@ async function loadChatHistory(room) {
         }
     } catch (error) {
         console.error('[MongoDB] Erreur lors du chargement de l\'historique depuis MongoDB :', error);
+    } finally {
+        // Cache le message de chargement
+        if (room === '0') {
+            hideNewsLoading();
+        } else {
+            hideChatLoading();
+        }
     }
+}
+
+
+
+
+function showChatLoading() {
+    document.getElementById('chat_loading_message').style.display = 'block';
+}
+
+function hideChatLoading() {
+    document.getElementById('chat_loading_message').style.display = 'none';
+}
+
+function showNewsLoading() {
+    document.getElementById('news_loading_message').style.display = 'block';
+}
+
+function hideNewsLoading() {
+    document.getElementById('news_loading_message').style.display = 'none';
 }
