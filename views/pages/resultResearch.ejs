@@ -13,7 +13,7 @@
   <p>No movies found.</p>
 <% } else { %>
     <% if (query) { %>
-        <h1>Search result for "<%= query %>"</h1>
+        <h1 class="text-center mt-4">Search result for "<%= query %>"</h1>
     <% } %>
     <% function formatDuration(minutes) {
     if (isNaN(minutes) || minutes === null || minutes === undefined) {

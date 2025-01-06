@@ -31,14 +31,14 @@
     <% } %>
 <% } %>
 
-    <h1><%= title %></h1>
+    <h1 class="text-center mt-4"><%= title %></h1>
     <!-- Display general errors -->
     <% if (error) { %>
         <p style="color: red;"><%= error %></p>
     <% } %>
 
     <!-- Form to select language and type -->
-    <form id="language-form" action="/springboot/languages" method="get">
+    <form class="text-center" id="language-form" action="/springboot/languages" method="get">
         <label for="type-select">Available Types:</label>
         <select id="type-select" name="selectedType">
             <option value="">-- Select a type --</option>
@@ -87,12 +87,11 @@
                     </h2>
                     <p><%= movie.tagline %></p>
                     <% if (movie.languages && movie.languages.length > 0) { %>
-                        <p><strong>Languages:</strong></p>
-                        <ul>
+                        <p><strong>Languages:</strong>
                             <% movie.languages.forEach(lang => { %>
-                                <li><%= lang.type %>: <%= lang.language %></li>
+                                <%= lang.language %> (<%= lang.type %>)
                             <% }) %>
-                        </ul>
+                        </p>
                     <% } else { %>
                         <p>No languages found.</p>
                     <% } %>
