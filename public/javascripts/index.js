@@ -165,25 +165,33 @@ function connectToRoom() {
  * it appends the given html text to the history div
  * @param text: teh text to append
  */
-function writeOnChatHistory(text) {
+function writeOnChatHistory(userId, message, timestamp) {
     let history = document.getElementById('chat_history');
     let paragraph = document.createElement('p');
-    paragraph.innerHTML = text;
+
+    const formattedDate = formatDate(timestamp);
+
+    paragraph.innerHTML = `<b>${userId}:</b> ${message} <span style="color: gray; font-size: 0.9em;">(${formattedDate})</span>`;
     history.appendChild(paragraph);
     document.getElementById('chat_input').value = '';
 }
+
 
 /**
  * it appends the given html text to the history div
  * @param text: teh text to append
  */
-function writeOnNewsHistory(text) {
+function writeOnNewsHistory(userId, message, timestamp) {
     let history = document.getElementById('news_history');
     let paragraph = document.createElement('p');
-    paragraph.innerHTML = text;
+
+    const formattedDate = formatDate(timestamp);
+
+    paragraph.innerHTML = `<b>${userId}:</b> ${message} <span style="color: gray; font-size: 0.9em;">(${formattedDate})</span>`;
     history.appendChild(paragraph);
     document.getElementById('news_input').value = '';
 }
+
 
 /**
  * it hides the initial form and shows the chat
@@ -234,12 +242,15 @@ async function loadChatHistory(room) {
             } else {
                 console.log('[MongoDB] Historique chargé avec succès. Messages:', messages);
                 messages.forEach(message => {
+                    const { userId, message: msgText, timestamp } = message;
+
                     if (room === '0') {
-                        writeOnNewsHistory(`<b>${message.userId}:</b> ${message.message}`);
+                        writeOnNewsHistory(userId, msgText, timestamp);
                     } else {
-                        writeOnChatHistory(`<b>${message.userId}:</b> ${message.message}`);
+                        writeOnChatHistory(userId, msgText, timestamp);
                     }
                 });
+
             }
         } else {
             console.error('[MongoDB] Échec du chargement de l\'historique. Réponse du serveur :', response.status);
@@ -273,4 +284,9 @@ function showNewsLoading() {
 
 function hideNewsLoading() {
     document.getElementById('news_loading_message').style.display = 'none';
+}
+
+function formatDate(timestamp) {
+    const date = new Date(timestamp);
+    return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
 }
