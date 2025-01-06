@@ -2,23 +2,89 @@
 <html>
 <head>
     <title><%= title %></title>
+    <style>
+        /* General Chat Styling */
+        .chat-title, .news-title {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
 
+        .chat-container {
+            background-color: #f3f8ff;
+            border-right: 2px solid #ccc;
+        }
+
+        .news-container {
+            background-color: #fffaf3;
+        }
+
+        .chat-history, .news-history {
+            height: 600px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9f9f9;
+        }
+
+        .message-container {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #eaf4ff;
+            border: 1px solid #b5d8ff;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-history .message-container {
+            background-color: #fff2e6;
+            border: 1px solid #ffcba4;
+        }
+
+        .message-container .message-date {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 5px;
+        }
+
+        .message-container .message-text {
+            font-size: 1em;
+            color: #333;
+        }
+
+        /* Input Area Styling */
+        .input-area {
+            margin-top: 15px;
+        }
+
+        .input-area .form-control {
+            border-radius: 20px;
+        }
+
+        .input-area .btn {
+            border-radius: 20px;
+        }
+    </style>
 </head>
-<body onload="init()">
-    <div id="chat_interface" style="display: block">
-        <div id="chat_container" class="split left">
-            <h1 id="chat_title">Film Chat</h1>
-            <div class="mb-3">
-                <div id="who_you_are" style="display: inline"></div>,
-                you are in the room :
-                <div id="in_room" style="display: inline"></div>
+<body onload="init()" class="container-fluid">
+    <div id="chat_interface" class="row">
+        <!-- Chat Section -->
+        <div id="chat_container" class="col-md-6 chat-container">
+            <h2 id="chat_title" class="chat-title">Film Chat</h2>
+            <div class="mb-3 d-flex align-items-center">
+                <div id="who_you_are" class="me-2" style="font-weight: bold;"></div>
+                <span>, you are in the room:</span>
+                <div id="in_room" class="ms-2" style="font-weight: bold;"></div>
             </div>
 
-            <!-- Chat history with scrollable content -->
-            <div id="chat_history" class="boxed overflow-auto" style="height: 600px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+            <!-- Chat History -->
+            <div id="chat_history" class="chat-history">
                 <p id="chat_loading_message" style="text-align: center; display: none; color: #888;">Loading chat...</p>
             </div>
-            <div id="chat_box" class="mt-3">
+
+            <!-- Chat Input -->
+            <div id="chat_box" class="input-area">
                 <form onsubmit="sendChatText(); return false;" class="d-flex">
                     <input type="text" id="chat_input" name="chat_input" class="form-control me-2" placeholder="Your message">
                     <button type="submit" class="btn btn-primary">Send</button>
@@ -26,22 +92,24 @@
             </div>
         </div>
 
-        <div id="news_container" class="split right">
-            <h1>General Chat</h1>
-            <div class="mb-3"> News & Events</div>
-            <!-- News history with scrollable content -->
-            <div id="news_history" class="boxed overflow-auto" style="height: 600px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+        <!-- News Section -->
+        <div id="news_container" class="col-md-6 news-container">
+            <h2 class="news-title">General Chat</h2>
+            <div class="mb-3" style="font-weight: bold;">News & Events</div>
+
+            <!-- News History -->
+            <div id="news_history" class="news-history">
                 <p id="news_loading_message" style="text-align: center; display: none; color: #888;">Loading news...</p>
             </div>
 
-            <form onsubmit="sendNewsText(); return false;" class="d-flex mt-3">
-                <input type="text" id="news_input" name="news_input" class="form-control me-2" placeholder="Your message">
-                <button type="submit" class="btn btn-secondary">Send</button>
-            </form>
+            <!-- News Input -->
+            <div id="news_box" class="input-area">
+                <form onsubmit="sendNewsText(); return false;" class="d-flex">
+                    <input type="text" id="news_input" name="news_input" class="form-control me-2" placeholder="Your message">
+                    <button type="submit" class="btn btn-secondary">Send</button>
+                </form>
+            </div>
         </div>
     </div>
-
 </body>
-
 </html>
-

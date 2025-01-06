@@ -47,41 +47,49 @@ function getParamsFromURL() {
  * it initialises the socket for /chat
  */
 function initChatSocket() {
-    // called when someone joins the room. If it is someone else it notifies the joining of the room
-    chat.on('joined', function (room, userId) {
+    // Called when someone joins the room
+    chat.on('joined', function (room, userId, timestamp) {
         if (userId === name) {
-            // it enters the chat
+            // Current user joins the chat
             DisplayRoom(room, userId);
         } else {
-            // notifies that someone has joined the room
-            writeOnChatHistory('<b>' + userId + '</b>' + ' joined room ' + room);
+            // Notify that someone else has joined the room
+            writeOnChatHistory(userId, `joined room ${room}`, timestamp);
         }
     });
-    // called when a message is received
-    chat.on('chat', function (room, userId, chatText) {
-        let who = userId
-        if (userId === name) who = 'Me';
-        writeOnChatHistory('<b>' + who + ':</b> ' + chatText);
-    });
 
+    // Called when a message is received
+    chat.on('chat', function (room, userId, chatText, timestamp) {
+        writeOnChatHistory(userId, chatText, timestamp);
+    });
 }
+
+
 
 /**
  * it initialises the socket for /news
  */
-function initNewsSocket(){
-    news.on('joined', function (name, userId) {
+function initNewsSocket() {
+    // Called when someone joins the general chat room
+    news.on('joined', function (name, userId, timestamp) {
         if (userId !== name) {
-            // notifies that someone has joined the room
-            writeOnNewsHistory('<b>'+name+'</b>' + ' joined general room ');
+            // Notify that someone else has joined the general room
+            if (!timestamp) {
+                timestamp = Date.now(); // Use current time if no timestamp is provided
+            }
+            writeOnNewsHistory(userId, 'joined the general room', timestamp);
         }
     });
 
-    // called when some news is received (note: only news received by others are received)
-    news.on('news', function (userId, newsText) {
-        writeOnNewsHistory('<b>' + userId + ':</b> ' + newsText);
+    // Called when a news message is received
+    news.on('news', function (userId, newsText, timestamp) {
+        if (!timestamp) {
+            timestamp = Date.now(); // Use current time if no timestamp is provided
+        }
+        writeOnNewsHistory(userId, newsText, timestamp);
     });
 }
+
 
 
 /**
@@ -166,15 +174,20 @@ function connectToRoom() {
  * @param text: teh text to append
  */
 function writeOnChatHistory(userId, message, timestamp) {
-    let history = document.getElementById('chat_history');
-    let paragraph = document.createElement('p');
+    const history = document.getElementById('chat_history');
+    const container = document.createElement('div');
+    container.classList.add('message-container');
 
     const formattedDate = formatDate(timestamp);
 
-    paragraph.innerHTML = `<b>${userId}:</b> ${message} <span style="color: gray; font-size: 0.9em;">(${formattedDate})</span>`;
-    history.appendChild(paragraph);
+    container.innerHTML = `
+        <div class="message-date">${formattedDate}</div>
+        <div class="message-text"><b>${userId}:</b> ${message}</div>
+    `;
+    history.appendChild(container);
     document.getElementById('chat_input').value = '';
 }
+
 
 
 /**
@@ -182,15 +195,20 @@ function writeOnChatHistory(userId, message, timestamp) {
  * @param text: teh text to append
  */
 function writeOnNewsHistory(userId, message, timestamp) {
-    let history = document.getElementById('news_history');
-    let paragraph = document.createElement('p');
+    const history = document.getElementById('news_history');
+    const container = document.createElement('div');
+    container.classList.add('message-container');
 
     const formattedDate = formatDate(timestamp);
 
-    paragraph.innerHTML = `<b>${userId}:</b> ${message} <span style="color: gray; font-size: 0.9em;">(${formattedDate})</span>`;
-    history.appendChild(paragraph);
+    container.innerHTML = `
+        <div class="message-date">${formattedDate}</div>
+        <div class="message-text"><b>${userId}:</b> ${message}</div>
+    `;
+    history.appendChild(container);
     document.getElementById('news_input').value = '';
 }
+
 
 
 /**
