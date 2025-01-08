@@ -26,9 +26,9 @@ const SPRING_BOOT_API = 'http://localhost:8082';
  *         name: id
  *         required: true
  *         schema:
- *           type: string
+ *           type: integer
  *         description: The unique ID of the movie.
- *         example: "1000002"
+ *         example: 1000002
  *     responses:
  *       200:
  *         description: Successfully retrieved movie details.
@@ -38,18 +38,18 @@ const SPRING_BOOT_API = 'http://localhost:8082';
  *               type: object
  *               properties:
  *                 id:
- *                   type: string
+ *                   type: integer
  *                   description: The unique ID of the movie.
- *                   example: "1000001"
+ *                   example: 1000001
  *                 name:
  *                   type: string
  *                   description: The title of the movie.
  *                   example: "Barbie"
  *                 date:
- *                   type: string
+ *                   type: integer
  *                   format: date
  *                   description: The release date of the movie.
- *                   example: "2023-07-21"
+ *                   example: 2023
  *                 description:
  *                   type: string
  *                   description: A brief description of the movie.
@@ -62,6 +62,10 @@ const SPRING_BOOT_API = 'http://localhost:8082';
  *                   type: string
  *                   description: The tagline of the movie.
  *                   example: "She's everything. He's just Ken."
+ *                 minute:
+ *                   type: integer
+ *                   description: The duration of the movie in minutes.
+ *                   example: 114
  *                 rating:
  *                   type: number
  *                   format: float
@@ -155,15 +159,113 @@ router.get('/movieDetails', async (req, res) => {
 });
 
 
-// Route to retrieve movies by keyword
+/**
+ * @swagger
+ * /springboot/findByKeyword:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Search for movies by keyword
+ *     description: Retrieve a paginated list of movies that match a specific keyword.
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The keyword to search for movies.
+ *         example: "Monster"
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: The page number for pagination (default is 0).
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved movies matching the keyword.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 movies:
+ *                   type: array
+ *                   description: A list of movies matching the keyword.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The unique ID of the movie.
+ *                         example: 1000002
+ *                       name:
+ *                         type: string
+ *                         description: The title of the movie.
+ *                         example: "Barbie"
+ *                       date:
+ *                         type: integer
+ *                         format: date
+ *                         description: The year of the movie.
+ *                         example: 2023
+ *                       tagline:
+ *                         type: string
+ *                         description: The tagline of the movie.
+ *                         example: "She's everything. He's just Ken."
+ *                       description:
+ *                         type: string
+ *                         description: A brief description of the movie.
+ *                         example: "Barbie and Ken are having the time of their lives in Barbie Land."
+ *                       minute:
+ *                         type: integer
+ *                         description: The duration of the movie in minutes.
+ *                         example: 114
+ *                       rating:
+ *                         type: number
+ *                         format: float
+ *                         description: The movie rating.
+ *                         example: 3.86
+ *                       link:
+ *                         type: string
+ *                         description: The link to the movie poster or trailer.
+ *                         example: "https://example.com/barbie-poster.jpg"
+ *       400:
+ *         description: Invalid or missing query parameters.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Invalid keyword or page number."
+ *       500:
+ *         description: Failed to retrieve movies due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving movies."
+ */
 router.get('/findByKeyword', async (req, res) => {
-    const { name, page } = req.query; // Récupérer le mot-clé et la page
+    const { name, page } = req.query;
     const currentPage = parseInt(page) || 0;
 
     try {
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByKeyword`, {
             params: { name, page: currentPage, size: 20 },
         });
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(200).json(response.data); // Renvoie uniquement les données JSON
+        }
 
         res.render('pages/resultResearch', {
             title: 'Search Results',
@@ -175,6 +277,12 @@ router.get('/findByKeyword', async (req, res) => {
     } catch (error) {
         console.error('Error while retrieving movies:', error.message);
 
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(500).json({
+                error: `Error retrieving movies: ${error.message}`,
+            });
+        }
+
         res.render('pages/resultResearch', {
             title: 'Search Error',
             movies: [],
@@ -184,6 +292,7 @@ router.get('/findByKeyword', async (req, res) => {
         });
     }
 });
+
 
 // Route to retrieve movies by genre
 router.get('/genres', async (req, res) => {
