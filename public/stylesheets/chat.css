@@ -1,3 +1,31 @@
+/* Split the screen in half */
+.split {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Control the left side of chat */
+.left {
+    left: 0;
+    background-color: #ffffff;
+    padding-top: 56px;
+}
+
+/* Control the right side of chat */
+.right {
+    right: 0;
+    background-color: #228B22;
+    color: white;
+    padding-top: 56px;
+}
+
 .chat-title, .news-title {
     color: #333;
     text-align: center;
