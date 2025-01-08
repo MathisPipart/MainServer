@@ -166,7 +166,7 @@ router.get('/movieDetails', async (req, res) => {
  *   get:
  *     tags:
  *       - SpringBoot
- *     summary: Search for movies by keyword
+ *     summary: Search for movies by keyword (search bar)
  *     description: Retrieve a paginated list of movies that match a specific keyword.
  *     parameters:
  *       - in: query
@@ -584,13 +584,128 @@ router.get('/releases', async (req, res) => {
     }
 });
 
-// Main route to display the page and handle the search
+/**
+ * @swagger
+ * /springboot/languages:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Retrieve available languages, types, and movies based on filters
+ *     description: Get a list of available languages and types for movies. Optionally, filter movies by selected language and type with pagination.
+ *     parameters:
+ *       - in: query
+ *         name: selectedLanguage
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Filter movies by language.
+ *         example: "English"
+ *       - in: query
+ *         name: selectedType
+ *         required: false
+ *         schema:
+ *           type: string
+ *         description: Filter movies by type.
+ *         example: "Spoken language"
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: The page number for pagination (default is 0).
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved languages, types, and movies (if filtered).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 languages:
+ *                   type: array
+ *                   description: List of distinct languages available.
+ *                   items:
+ *                     type: string
+ *                     example: "English"
+ *                 types:
+ *                   type: array
+ *                   description: List of distinct types available.
+ *                   items:
+ *                     type: string
+ *                     example: "Language"
+ *                 movies:
+ *                   type: array
+ *                   description: Filtered list of movies based on language and type.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The unique ID of the movie.
+ *                         example: 1000002
+ *                       name:
+ *                         type: string
+ *                         description: The title of the movie.
+ *                         example: "Barbie"
+ *                       date:
+ *                         type: integer
+ *                         format: date
+ *                         description: The release year of the movie.
+ *                         example: 2023
+ *                       description:
+ *                         type: string
+ *                         description: A brief description of the movie.
+ *                         example: "Barbie and Ken are having the time of their lives in Barbie Land."
+ *                       duration:
+ *                         type: integer
+ *                         description: The duration of the movie in minutes.
+ *                         example: 114
+ *                       rating:
+ *                         type: number
+ *                         format: float
+ *                         description: The movie rating.
+ *                         example: 3.86
+ *                       tagline:
+ *                         type: string
+ *                         description: The tagline of the movie.
+ *                         example: "She's everything. He's just Ken."
+ *                       link:
+ *                         type: string
+ *                         description: The link to the movie poster or trailer.
+ *                         example: "https://example.com/barbie-poster.jpg"
+ *                       languages:
+ *                         type: array
+ *                         description: List of languages for the movie.
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             type:
+ *                               type: string
+ *                               description: The type of language.
+ *                               example: "Language"
+ *                             language:
+ *                               type: string
+ *                               description: The language name.
+ *                               example: "English"
+ *       500:
+ *         description: Failed to retrieve data due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving necessary data."
+ */
 router.get('/languages', async (req, res) => {
     const { selectedLanguage, selectedType, page } = req.query;
     const currentPage = parseInt(page) || 0;
 
     try {
-        // Retrieve languages and types for the form
         const languagesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctLanguages`);
         const typesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctTypes`);
 
@@ -599,7 +714,6 @@ router.get('/languages', async (req, res) => {
 
         let movies = null;
 
-        // If a search is performed
         if (selectedLanguage || selectedType) {
             try {
                 const moviesResponse = await axios.get(`${SPRING_BOOT_API}/movies/findMoviesByLanguageAndType`, {
@@ -609,8 +723,16 @@ router.get('/languages', async (req, res) => {
                 movies = groupMoviesById(moviesResponse.data);
             } catch (searchError) {
                 console.error('Error while searching for movies:', searchError.message);
-                movies = []; // No movies found or error
+                movies = [];
             }
+        }
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(200).json({
+                languages,
+                types,
+                movies,
+            });
         }
 
         res.render('pages/languages', {
@@ -625,6 +747,12 @@ router.get('/languages', async (req, res) => {
         });
     } catch (error) {
         console.error('Error while retrieving languages or types:', error.message);
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(500).json({
+                error: 'Error retrieving necessary data.',
+            });
+        }
 
         res.render('pages/languages', {
             title: 'Error',
