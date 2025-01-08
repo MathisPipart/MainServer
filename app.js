@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var expressLayouts = require('express-ejs-layouts');
+const { swaggerUi, swaggerSpec } = require("./swagger/swaggerConfig");
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -31,6 +32,8 @@ app.use('/users', usersRouter);
 app.use('/springboot', springbootRouter);
 app.use('/chat', chatRoutes);
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -48,6 +51,5 @@ const utils = require('./public/javascripts/utils');
 
 app.locals.formatDuration = utils.formatDuration;
 app.locals.generateStarDisplay = utils.generateStarDisplay;
-
 
 module.exports = app;
