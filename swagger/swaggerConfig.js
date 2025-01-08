@@ -7,7 +7,7 @@ const options = {
         info: {
             title: "Main Server API",
             version: "1.0.0",
-            description: "Centralized API documentation for Main Server, including MongoDB routes.",
+            description: "Centralized API documentation for Main Server, including MongoDB and SpringBoot routes.",
         },
         servers: [
             {
@@ -16,7 +16,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/mongoDB.js"],
+    apis: ["./routes/mongoDB.js", "./routes/springboot.js"],
 };
 
 const swaggerSpec = swaggerJsDoc(options);

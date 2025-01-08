@@ -6,11 +6,131 @@ const router = express.Router();
 const SPRING_BOOT_API = 'http://localhost:8082';
 
 
+/**
+ * @swagger
+ * tags:
+ *   name: SpringBoot
+ *   description: Endpoints for SpringBoot Server
+ */
+
+/**
+ * @swagger
+ * /springboot/movieDetails:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Get detailed information about a movie
+ *     description: Retrieve detailed information about a movie, including title, description, genres, actors, crew, languages, releases, and more.
+ *     parameters:
+ *       - in: query
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The unique ID of the movie.
+ *         example: "1000002"
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved movie details.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: string
+ *                   description: The unique ID of the movie.
+ *                   example: "1000001"
+ *                 name:
+ *                   type: string
+ *                   description: The title of the movie.
+ *                   example: "Barbie"
+ *                 date:
+ *                   type: string
+ *                   format: date
+ *                   description: The release date of the movie.
+ *                   example: "2023-07-21"
+ *                 description:
+ *                   type: string
+ *                   description: A brief description of the movie.
+ *                   example: "Barbie suffers a crisis that leads her to question her world and her existence."
+ *                 genres:
+ *                   type: string
+ *                   description: The genres of the movie.
+ *                   example: "Comedy, Fantasy, Adventure"
+ *                 tagline:
+ *                   type: string
+ *                   description: The tagline of the movie.
+ *                   example: "She's everything. He's just Ken."
+ *                 rating:
+ *                   type: number
+ *                   format: float
+ *                   description: The movie rating.
+ *                   example: 3.86
+ *                 link:
+ *                   type: string
+ *                   description: The link to the movie poster or trailer.
+ *                   example: "https://example.com/barbie-poster.jpg"
+ *                 languages:
+ *                   type: string
+ *                   description: The languages of the movie.
+ *                   example: "English, French, Spanish"
+ *                 countries:
+ *                   type: string
+ *                   description: The countries where the movie was produced.
+ *                   example: "USA, UK"
+ *                 themes:
+ *                   type: string
+ *                   description: The themes of the movie.
+ *                   example: "Comedy, Adventure"
+ *                 studios:
+ *                   type: string
+ *                   description: The studios involved in the production of the movie.
+ *                   example: "Warner Bros., Mattel Films"
+ *                 actors:
+ *                   type: string
+ *                   description: The actors and their roles in the movie.
+ *                   example: "Margot Robbie (Barbie), Ryan Gosling (Ken)"
+ *                 crew:
+ *                   type: string
+ *                   description: The crew members and their roles.
+ *                   example: "Greta Gerwig (Director), Noah Baumbach (Writer)"
+ *                 releases:
+ *                   type: string
+ *                   description: The release details of the movie.
+ *                   example: "2023-07-21 in USA (Theatrical)"
+ *       400:
+ *         description: Invalid or missing movie ID.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Invalid movie ID."
+ *       500:
+ *         description: Failed to retrieve movie details due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving movie details."
+ */
 router.get('/movieDetails', async (req, res) => {
     const movieId = req.query.id;
 
     try {
         const response = await axios.get(`${SPRING_BOOT_API}/detailsMovies/findById/${movieId}`);
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(200).json(response.data);
+        }
 
         res.render('pages/movieDetails', {
             title: 'Movie Details',
@@ -19,6 +139,13 @@ router.get('/movieDetails', async (req, res) => {
         });
     } catch (error) {
         console.error('Erreur lors de la récupération des détails du film :', error.message, error.response?.data);
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(500).json({
+                error: `Erreur : ${error.message} - ${error.response?.data || 'Aucune donnée reçue'}`,
+            });
+        }
+
         res.render('pages/movieDetails', {
             title: 'Movie Details',
             movie: null,
@@ -26,6 +153,7 @@ router.get('/movieDetails', async (req, res) => {
         });
     }
 });
+
 
 // Route to retrieve movies by keyword
 router.get('/findByKeyword', async (req, res) => {
