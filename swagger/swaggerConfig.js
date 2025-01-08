@@ -16,7 +16,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/mongoDB.js"], // Inclure le fichier actuel
+    apis: ["./routes/mongoDB.js"],
 };
 
 const swaggerSpec = swaggerJsDoc(options);
