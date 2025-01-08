@@ -265,7 +265,7 @@ router.get('/findByKeyword', async (req, res) => {
         });
 
         if (req.headers['accept'] === 'application/json') {
-            return res.status(200).json(response.data); // Renvoie uniquement les données JSON
+            return res.status(200).json(response.data);
         }
 
         res.render('pages/resultResearch', {
@@ -395,21 +395,18 @@ router.get('/findByKeyword', async (req, res) => {
  *                   example: "Error retrieving movies."
  */
 router.get('/genres', async (req, res) => {
-    const { genre, page } = req.query; // Récupérez le genre et la page
+    const { genre, page } = req.query;
     const currentPage = parseInt(page) || 0;
 
     try {
-        // Appel à l'API Spring Boot
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByGenre`, {
             params: { genre, page: currentPage, size: 20 },
         });
 
-        // Vérifie si la requête demande JSON
         if (req.headers['accept'] === 'application/json') {
-            return res.status(200).json(response.data); // Renvoie uniquement les données JSON
+            return res.status(200).json(response.data);
         }
 
-        // Sinon, rend la vue EJS
         res.render('pages/genres', {
             title: `Movies for Genre: ${genre}`,
             movies: response.data,
@@ -420,14 +417,12 @@ router.get('/genres', async (req, res) => {
     } catch (error) {
         console.error('Error while retrieving movies by genre:', error.message);
 
-        // Gestion des erreurs JSON
         if (req.headers['accept'] === 'application/json') {
             return res.status(500).json({
                 error: `Error retrieving movies: ${error.message}`,
             });
         }
 
-        // Rendu avec erreur dans la vue EJS
         res.render('pages/genres', {
             title: 'Search Error',
             movies: [],
@@ -439,14 +434,113 @@ router.get('/genres', async (req, res) => {
 });
 
 
-// Route to retrieve movies by date
+/**
+ * @swagger
+ * /springboot/releases:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Get movies released in a specific year
+ *     description: Retrieve a paginated list of movies that were released in a specific year.
+ *     parameters:
+ *       - in: query
+ *         name: date
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: "The year of the movie release (format: YYYY)."
+ *         example: "2023"
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: The page number for pagination (default is 0).
+ *         example: 1
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved movies released in the given year.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 movies:
+ *                   type: array
+ *                   description: A list of movies released in the given year.
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         description: The unique ID of the movie.
+ *                         example: 1000002
+ *                       name:
+ *                         type: string
+ *                         description: The title of the movie.
+ *                         example: "Barbie"
+ *                       date:
+ *                         type: integer
+ *                         format: date
+ *                         description: The release year of the movie.
+ *                         example: 2023
+ *                       tagline:
+ *                         type: string
+ *                         description: The tagline of the movie.
+ *                         example: "She's everything. He's just Ken."
+ *                       description:
+ *                         type: string
+ *                         description: A brief description of the movie.
+ *                         example: "Barbie and Ken are having the time of their lives in Barbie Land."
+ *                       minute:
+ *                         type: integer
+ *                         description: The duration of the movie in minutes.
+ *                         example: 114
+ *                       rating:
+ *                         type: number
+ *                         format: float
+ *                         description: The movie rating.
+ *                         example: 3.86
+ *                       link:
+ *                         type: string
+ *                         description: The link to the movie poster or trailer.
+ *                         example: "https://example.com/barbie-poster.jpg"
+ *       400:
+ *         description: Invalid or missing query parameters (e.g., invalid date format).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Invalid date format. Expected format: YYYY."
+ *       500:
+ *         description: Failed to retrieve movies due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving movies."
+ */
 router.get('/releases', async (req, res) => {
     const { date, page } = req.query;
     const currentPage = parseInt(page) || 0;
 
     try {
-        // Validate the date format (YYYY)
         if (!/^\d{4}$/.test(date)) {
+            if (req.headers['accept'] === 'application/json') {
+                return res.status(400).json({
+                    error: 'Invalid date format. Expected format: YYYY.'
+                });
+            }
+
             return res.render('pages/releases', {
                 title: 'Search by Date',
                 movies: [],
@@ -456,10 +550,13 @@ router.get('/releases', async (req, res) => {
             });
         }
 
-        // Call the Spring Boot API
         const response = await axios.get(`${SPRING_BOOT_API}/movies/findByDate`, {
             params: { date, page: currentPage, size: 20 }
         });
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(200).json(response.data); // Renvoie uniquement les données JSON
+        }
 
         res.render('pages/releases', {
             title: `Movies from ${date}`,
@@ -470,6 +567,12 @@ router.get('/releases', async (req, res) => {
         });
     } catch (error) {
         console.error('Error while retrieving movies by date:', error.message);
+
+        if (req.headers['accept'] === 'application/json') {
+            return res.status(500).json({
+                error: `Error retrieving movies: ${error.message}`,
+            });
+        }
 
         res.render('pages/releases', {
             title: 'Search Error',
