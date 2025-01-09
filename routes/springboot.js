@@ -584,6 +584,7 @@ router.get('/releases', async (req, res) => {
     }
 });
 
+
 /**
  * @swagger
  * /springboot/languages:
@@ -591,7 +592,12 @@ router.get('/releases', async (req, res) => {
  *     tags:
  *       - SpringBoot
  *     summary: Retrieve available languages, types, and movies based on filters
- *     description: Get a list of available languages and types for movies. Optionally, filter movies by selected language and type with pagination.
+ *     description: >
+ *       This endpoint fetches a list of available languages and types from the Spring Boot API
+ *       using the following endpoints:
+ *       - `/languages/distinctLanguages` for distinct languages.
+ *       - `/languages/distinctTypes` for distinct types.
+ *       It fetches movies filtered by language and type.
  *     parameters:
  *       - in: query
  *         name: selectedLanguage
@@ -706,8 +712,8 @@ router.get('/languages', async (req, res) => {
     const currentPage = parseInt(page) || 0;
 
     try {
-        const languagesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctLanguages`);
-        const typesResponse = await axios.get(`${SPRING_BOOT_API}/languages/distinctTypes`);
+        const languagesResponse = await axios.get('http://localhost:3000/springboot/languages/distinctLanguages');
+        const typesResponse = await axios.get('http://localhost:3000/springboot/languages/distinctTypes');
 
         const languages = languagesResponse.data;
         const types = typesResponse.data;
@@ -767,6 +773,89 @@ router.get('/languages', async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /springboot/languages/distinctLanguages:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Retrieve a list of distinct languages
+ *     description: Fetch all distinct languages available for movies in the database.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of languages.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: A list of distinct languages.
+ *               items:
+ *                 type: string
+ *                 example: "English"
+ *       500:
+ *         description: Failed to retrieve the list of languages due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving languages."
+ */
+router.get('/languages/distinctLanguages', async (req, res) => {
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/languages/distinctLanguages`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error('Error retrieving distinct languages:', error.message);
+        res.status(500).json({ error: 'Error retrieving languages.' });
+    }
+});
+
+/**
+ * @swagger
+ * /springboot/languages/distinctTypes:
+ *   get:
+ *     tags:
+ *       - SpringBoot
+ *     summary: Retrieve a list of distinct types
+ *     description: Fetch all distinct types of movies in the database.
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved the list of types.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               description: A list of distinct types.
+ *               items:
+ *                 type: string
+ *                 example: "Spoken language"
+ *       500:
+ *         description: Failed to retrieve the list of types due to a server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Error retrieving types."
+ */
+router.get('/languages/distinctTypes', async (req, res) => {
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/languages/distinctTypes`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error('Error retrieving distinct types:', error.message);
+        res.status(500).json({ error: 'Error retrieving types.' });
+    }
+});
+
 function groupMoviesById(data) {
     const movies = {};
     data.forEach(row => {
@@ -793,6 +882,7 @@ function groupMoviesById(data) {
     });
     return Object.values(movies);
 }
+
 
 
 module.exports = router;
