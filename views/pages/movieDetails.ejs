@@ -14,172 +14,174 @@
                 <h1><%= error %></h1>
             </div>
         <% } else { %>
-            <div class="movie-header">
-                <img class="poster-img" src="<%= movie.link %>" alt="<%= movie.name %>">
-                <div class="movie-info">
-                    <h1><%= movie.name %> (<%= movie.date %>)</h1>
-                    <p><strong>Tagline:</strong> <%= movie.tagline %></p>
-                    <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
-                    <p><strong>Genres:</strong> <span class="badge bg-primary"><%= movie.genres %></span></p>
-                    <p><strong>Rating:</strong> <span class="badge bg-success"><%= movie.rating %></span></p>
-                    <div>
-                        <%- generateStarDisplay(movie.rating) %>
-                    </div>
+            <div class="box-movie border rounded shadow-sm p-4 bg-white thick-border">
+                <div class="movie-header">
+                    <img class="poster-img" src="<%= movie.link %>" alt="<%= movie.name %>">
+                    <div class="movie-info">
+                        <h1><%= movie.name %> (<%= movie.date %>)</h1>
+                        <p><strong>Tagline:</strong> <%= movie.tagline %></p>
+                        <p><strong>Duration:</strong> <%= formatDuration(movie.minute) %></p>
+                        <p><strong>Genres:</strong> <span class="badge bg-primary"><%= movie.genres %></span></p>
+                        <p><strong>Rating:</strong> <span class="badge bg-success"><%= movie.rating %></span></p>
+                        <div>
+                            <%- generateStarDisplay(movie.rating) %>
+                        </div>
 
-                    <br>
-                    <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
-                            class="btn btn-success rounded-pill shadow-sm mt-2">
-                        <i class="bi bi-chat-dots"></i> Join Chat
-                    </button>
-                </div>
-            </div>
-
-            <div class="movie-details">
-                <h3 class="text-uppercase text-primary">About the movie</h3>
-                <p><%= movie.description %></p>
-
-                <div class="grid-container">
-                    <div class="grid-item">
-                        <h4 class="text-secondary">Languages</h4>
-                        <p><%= movie.languages %></p>
-                    </div>
-                    <div class="grid-item">
-                        <h4 class="text-secondary">Countries</h4>
-                        <p><%= movie.countries %></p>
-                    </div>
-                    <div class="grid-item">
-                        <h4 class="text-secondary">Themes</h4>
-                        <p><%= movie.themes %></p>
-                    </div>
-                    <div class="grid-item">
-                        <h4 class="text-secondary">Studios</h4>
-                        <p><%= movie.studios %></p>
+                        <br>
+                        <button onclick="goToChat('<%= movie.id %>', '<%= movie.name %>')"
+                                class="btn btn-success rounded-pill shadow-sm mt-2">
+                            <i class="bi bi-chat-dots"></i> Join Chat
+                        </button>
                     </div>
                 </div>
 
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h4 class="text-secondary">Actors</h4>
-                        <div class="scrollable-container">
-                            <table class="table">
-                                <thead class="table-header">
-                                    <tr>
-                                        <th>Role</th>
-                                        <th>Actor</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%
-                                        if (movie.actors && movie.actors.trim().length > 0) {
-                                            movie.actors.split(',').forEach(actor => {
-                                                const match = actor.match(/\((.*?)\)/);
-                                                const role = match ? match[1] : 'Unknown Role';
-                                                const name = actor.replace(/\(.*?\)/, '').trim();
-                                    %>
-                                        <tr>
-                                            <td><%= role %></td>
-                                            <td><%= name %></td>
-                                        </tr>
-                                    <%
-                                            });
-                                        } else {
-                                    %>
-                                        <tr>
-                                            <td colspan="2" class="text-center">No actor data available</td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                <div class="movie-details">
+                    <h3 class="text-uppercase text-primary">About the movie</h3>
+                    <p><%= movie.description %></p>
+
+                    <div class="grid-container">
+                        <div class="grid-item">
+                            <h4 class="text-secondary">Languages</h4>
+                            <p><%= movie.languages %></p>
+                        </div>
+                        <div class="grid-item">
+                            <h4 class="text-secondary">Countries</h4>
+                            <p><%= movie.countries %></p>
+                        </div>
+                        <div class="grid-item">
+                            <h4 class="text-secondary">Themes</h4>
+                            <p><%= movie.themes %></p>
+                        </div>
+                        <div class="grid-item">
+                            <h4 class="text-secondary">Studios</h4>
+                            <p><%= movie.studios %></p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <h4 class="text-secondary">Crew</h4>
-                        <div class="scrollable-container">
-                            <table class="table">
-                                <thead class="table-header">
-                                    <tr>
-                                        <th>Role</th>
-                                        <th>Crew Member</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%
-                                        if (movie.crew && movie.crew.trim().length > 0) {
-                                            movie.crew.split(',').forEach(member => {
-                                                const match = member.match(/\((.*?)\)/);
-                                                const role = match ? match[1] : 'Unknown Role';
-                                                const name = member.replace(/\(.*?\)/, '').trim();
-                                    %>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h4 class="text-secondary">Actors</h4>
+                            <div class="scrollable-container">
+                                <table class="table">
+                                    <thead class="table-header">
                                         <tr>
-                                            <td><%= role %></td>
-                                            <td><%= name %></td>
+                                            <th>Role</th>
+                                            <th>Actor</th>
                                         </tr>
-                                    <%
-                                            });
-                                        } else {
-                                    %>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                            if (movie.actors && movie.actors.trim().length > 0) {
+                                                movie.actors.split(',').forEach(actor => {
+                                                    const match = actor.match(/\((.*?)\)/);
+                                                    const role = match ? match[1] : 'Unknown Role';
+                                                    const name = actor.replace(/\(.*?\)/, '').trim();
+                                        %>
+                                            <tr>
+                                                <td><%= role %></td>
+                                                <td><%= name %></td>
+                                            </tr>
+                                        <%
+                                                });
+                                            } else {
+                                        %>
+                                            <tr>
+                                                <td colspan="2" class="text-center">No actor data available</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h4 class="text-secondary">Crew</h4>
+                            <div class="scrollable-container">
+                                <table class="table">
+                                    <thead class="table-header">
                                         <tr>
-                                            <td colspan="2" class="text-center">No crew data available</td>
+                                            <th>Role</th>
+                                            <th>Crew Member</th>
                                         </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                            if (movie.crew && movie.crew.trim().length > 0) {
+                                                movie.crew.split(',').forEach(member => {
+                                                    const match = member.match(/\((.*?)\)/);
+                                                    const role = match ? match[1] : 'Unknown Role';
+                                                    const name = member.replace(/\(.*?\)/, '').trim();
+                                        %>
+                                            <tr>
+                                                <td><%= role %></td>
+                                                <td><%= name %></td>
+                                            </tr>
+                                        <%
+                                                });
+                                            } else {
+                                        %>
+                                            <tr>
+                                                <td colspan="2" class="text-center">No crew data available</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="row mt-4">
-                    <div class="col-md-6">
-                        <h4 class="text-secondary">Releases</h4>
-                        <div class="scrollable-container">
-                            <table class="table">
-                                <thead class="table-header">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Country</th>
-                                        <th>Method</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <%
-                                        if (movie.releases) {
-                                            const releasesArray = movie.releases.split(',').map(release => {
-                                                const match = release.match(/(\d{4}-\d{2}-\d{2})\s+in\s+(.+?)\s+\((.+?)\)/);
-                                                return match ? {
-                                                    date: match[1],
-                                                    country: match[2],
-                                                    method: match[3]
-                                                } : null;
-                                            }).filter(release => release !== null);
-
-                                            // Sort by ascending date
-                                            releasesArray.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-                                            releasesArray.forEach(release => {
-                                    %>
+                    <div class="row mt-4">
+                        <div class="col-md-6">
+                            <h4 class="text-secondary">Releases</h4>
+                            <div class="scrollable-container">
+                                <table class="table">
+                                    <thead class="table-header">
                                         <tr>
-                                            <td><%= release.date %></td>
-                                            <td><%= release.country %></td>
-                                            <td><%= release.method %></td>
+                                            <th>Date</th>
+                                            <th>Country</th>
+                                            <th>Method</th>
                                         </tr>
-                                    <%
-                                            });
-                                        } else {
-                                    %>
-                                        <tr>
-                                            <td colspan="3" class="text-center">No release data available</td>
-                                        </tr>
-                                    <% } %>
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                            if (movie.releases) {
+                                                const releasesArray = movie.releases.split(',').map(release => {
+                                                    const match = release.match(/(\d{4}-\d{2}-\d{2})\s+in\s+(.+?)\s+\((.+?)\)/);
+                                                    return match ? {
+                                                        date: match[1],
+                                                        country: match[2],
+                                                        method: match[3]
+                                                    } : null;
+                                                }).filter(release => release !== null);
+
+                                                // Sort by ascending date
+                                                releasesArray.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                                                releasesArray.forEach(release => {
+                                        %>
+                                            <tr>
+                                                <td><%= release.date %></td>
+                                                <td><%= release.country %></td>
+                                                <td><%= release.method %></td>
+                                            </tr>
+                                        <%
+                                                });
+                                            } else {
+                                        %>
+                                            <tr>
+                                                <td colspan="3" class="text-center">No release data available</td>
+                                            </tr>
+                                        <% } %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
+
+
                 </div>
-
-
-
             </div>
         <% } %>
     </div>

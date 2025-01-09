@@ -27,8 +27,8 @@ h1 {
 }
 
 .star {
-  width: 24px; /* Width of a star */
-  height: 24px; /* Height of a star */
+  width: 24px;
+  height: 24px;
   background: linear-gradient(to right, gold var(--star-fill), lightgray var(--star-fill));
   -webkit-mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
   mask: url('https://raw.githubusercontent.com/twbs/icons/main/icons/star-fill.svg') center/contain no-repeat;
@@ -38,37 +38,45 @@ h1 {
 }
 
 .movie-container {
-  display: flex; /* Align the poster and text inline */
-  align-items: center; /* Align items vertically */
-  gap: 10px; /* Reduce space between the poster and the text */
-  margin-bottom: 20px; /* Space between movie entries */
-  padding-left: 20px; /* Add space on the left so the poster is not stuck to the edge */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 40px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.15) !important;
+  border-radius: 55px !important;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: 40px !important;
+  margin-right: 40px !important;
+}
+hr {
+  display: contents;
 }
 
 .poster-boxed {
-  flex: 0 0 30%; /* The poster occupies 30% of the width */
-  text-align: center; /* Center content vertically */
+  flex: 0 0 30%;
+  text-align: center;
 }
 
 .poster-img {
-  max-width: 100%; /* The poster takes up all the available space in its box */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds a shadow */
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .info {
-  flex: 1; /* Takes up all the remaining space */
-  color: black; /* Text in black */
-  background-color: transparent; /* Remove the green background */
-  padding-right: 20px; /* Add space to the right to separate text from the edge */
+  flex: 1;
+  color: black;
+  background-color: transparent;
+  padding-right: 20px;
 }
 
 .info h2 {
-  margin-top: 0; /* Remove space above the title */
+  margin-top: 0;
 }
 
 .info p {
-  margin: 5px 0; /* Reduce spacing between paragraphs */
+  margin: 5px 0;
 }
 
 #homeH1{
