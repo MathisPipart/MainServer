@@ -16,6 +16,70 @@ const SPRING_BOOT_API = 'http://localhost:8082';
 
 /**
  * @swagger
+ * /springboot/distinctGenres:
+ *   get:
+ *     summary: "MENU : Retrieve a list of distinct genre for the menu"
+ *     description: Fetches a list of unique genres available in the database.
+ *     tags:
+ *       - SpringBoot
+ *     responses:
+ *       200:
+ *         description: A list of distinct genres.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 example: Action
+ *       500:
+ *         description: Internal server error while retrieving genres.
+ */
+router.get('/distinctGenres', async (req, res) => {
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/genres/distinctGenres`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error('Error retrieving distinct types:', error.message);
+        res.status(500).json({ error: 'Error retrieving types.' });
+    }
+});
+
+
+/**
+ * @swagger
+ * /springboot/distinctDates:
+ *   get:
+ *     summary: "MENU : Retrieve distinct release dates for the menu"
+ *     description: Fetches a list of unique release dates for movies, sorted in descending order.
+ *     tags:
+ *       - SpringBoot
+ *     responses:
+ *       200:
+ *         description: A list of distinct release dates.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: string
+ *                 example: 2020
+ *       500:
+ *         description: Internal server error while retrieving dates.
+ */
+router.get('/distinctDates', async (req, res) => {
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/movies/distinctDates`);
+        res.status(200).json(response.data);
+    } catch (error) {
+        console.error('Error retrieving distinct dates:', error.message);
+        res.status(500).json({ error: 'Error retrieving distinct dates.' });
+    }
+});
+
+
+/**
+ * @swagger
  * /springboot/movieDetails:
  *   get:
  *     tags:
@@ -856,28 +920,6 @@ router.get('/languages/distinctTypes', async (req, res) => {
     }
 });
 
-
-router.get('/distinctGenres', async (req, res) => {
-    try {
-        const response = await axios.get(`${SPRING_BOOT_API}/genres/distinctGenres`);
-        res.status(200).json(response.data);
-        console.log(response.data);
-    } catch (error) {
-        console.error('Error retrieving distinct types:', error.message);
-        res.status(500).json({ error: 'Error retrieving types.' });
-    }
-});
-
-router.get('/distinctDates', async (req, res) => {
-    try {
-        const response = await axios.get(`${SPRING_BOOT_API}/movies/distinctDates`);
-        res.status(200).json(response.data);
-        console.log('Distinct dates fetched:', response.data);
-    } catch (error) {
-        console.error('Error retrieving distinct dates:', error.message);
-        res.status(500).json({ error: 'Error retrieving distinct dates.' });
-    }
-});
 
 
 function groupMoviesById(data) {
