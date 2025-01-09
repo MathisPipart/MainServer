@@ -2,7 +2,6 @@ var express = require('express');
 const axios = require('axios');
 var router = express.Router();
 
-// Base URL for the Spring Boot API
 const SPRING_BOOT_API = 'http://localhost:8082';
 
 
@@ -58,10 +57,6 @@ router.get('/', async function (req, res) {
   }
 });
 
-
-router.get('/releases', function(req, res, next) {
-  res.render('pages/releases', { title: 'Releases', release:'2010'});
-});
 
 router.get('/chat', function(req, res, next) {
   res.render('pages/chat', { title: 'Chat' });
