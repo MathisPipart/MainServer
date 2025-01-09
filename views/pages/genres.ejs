@@ -1,6 +1,7 @@
 <% if (error) { %>
     <p><%= error %></p>
 <% } else { %>
+    <h1 id="homeH1" class="text-center mt-4"><%= title %></h1>
 
     <div id="results" class="ps-3">
         <% movies.forEach(movie => { %>

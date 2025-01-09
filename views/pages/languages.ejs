@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
-    <h1 class="text-center mt-4"><%= title %></h1>
+    <h1 id="homeH1" class="text-center mt-4"><%= title %></h1>
     <!-- Display general errors -->
     <% if (error) { %>
         <p style="color: red;"><%= error %></p>
@@ -41,6 +41,7 @@
         <button type="submit">Search</button>
     </form>
 
+    <br>
     <br>
 
     <div id="results" class="ps-3">
