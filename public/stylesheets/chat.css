@@ -35,10 +35,20 @@
 .chat-container {
     background-color: #f3f8ff;
     border-right: 2px solid #ccc;
+    margin-top: -27px;
+    padding-bottom: 50px;
+    margin-bottom: -27px;
+    padding-left: 30px;
+    padding-right: 15px;
 }
 
 .news-container {
     background-color: #fffaf3;
+    margin-top: -27px;
+    padding-bottom: 50px;
+    margin-bottom: -27px;
+    padding-right: 30px;
+    padding-left: 15px;
 }
 
 .chat-history, .news-history {
@@ -75,9 +85,8 @@
     color: #333;
 }
 
-/* Input Area Styling */
 .input-area {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .input-area .form-control {
@@ -86,4 +95,9 @@
 
 .input-area .btn {
     border-radius: 20px;
+}
+
+body, html {
+    overflow-x: hidden;
+    width: 100%;
 }
