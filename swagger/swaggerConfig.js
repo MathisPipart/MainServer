@@ -16,7 +16,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/mongoDB.js", "./routes/springboot.js"],
+    apis: ["./routes/mongoDB.js", "./routes/index.js", "./routes/springboot.js"],
 };
 
 const swaggerSpec = swaggerJsDoc(options);

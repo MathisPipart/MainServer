@@ -5,7 +5,33 @@ var router = express.Router();
 // Base URL for the Spring Boot API
 const SPRING_BOOT_API = 'http://localhost:8082';
 
-// GET home page
+
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: "Home Page : Retrieve the top-rated movies"
+ *     description: Fetches a paginated list of top-rated movies.
+ *     tags:
+ *       - SpringBoot
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         schema:
+ *           type: integer
+ *           default: 0
+ *         description: The page number to retrieve (pagination).
+ *     responses:
+ *       200:
+ *         description: A paginated list of top-rated movies.
+ *         content:
+ *           text/html:
+ *             schema:
+ *               type: string
+ *               example: "<html>Rendered page content</html>"
+ *       500:
+ *         description: Internal server error while fetching top-rated movies.
+ */
 router.get('/', async function (req, res) {
   const page = parseInt(req.query.page) || 0;
 
@@ -31,6 +57,7 @@ router.get('/', async function (req, res) {
     });
   }
 });
+
 
 router.get('/releases', function(req, res, next) {
   res.render('pages/releases', { title: 'Releases', release:'2010'});
