@@ -52,7 +52,6 @@ async function loadGenres() {
     }
 }
 
-
 /**
  * Fetches and loads distinct release dates from the server and populates the releases dropdown menu.
  * Each date is added as a link in a list item.

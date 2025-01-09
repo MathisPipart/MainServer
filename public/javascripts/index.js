@@ -3,11 +3,9 @@ let roomNo = null;
 let chat= io.connect('/chat');
 let news= io.connect('/news');
 
-
 /**
- * called by <body onload>
- * it initialises the interface and the expected socket messages
- * plus the associated actions
+ * Called by <body onload>. Initializes the interface and configures
+ * the expected socket messages and associated actions.
  */
 function init() {
     const params = getParamsFromURL();
@@ -31,8 +29,11 @@ function init() {
     initNewsSocket();
 }
 
-
-// Retrieves parameters from URL
+/**
+ * Retrieves parameters from the URL query string.
+ *
+ * @returns {Object} An object containing roomNo, name, and movieName parameters.
+ */
 function getParamsFromURL() {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -42,9 +43,8 @@ function getParamsFromURL() {
     };
 }
 
-
 /**
- * it initialises the socket for /chat
+ * it initialises the socket for /chat and sets up event listeners for chat interactions.
  */
 function initChatSocket() {
     // Called when someone joins the room
@@ -64,10 +64,8 @@ function initChatSocket() {
     });
 }
 
-
-
 /**
- * it initialises the socket for /news
+ * it initialises the socket for /news and sets up event listeners for news updates.
  */
 function initNewsSocket() {
     // Called when someone joins the general chat room
@@ -90,11 +88,9 @@ function initNewsSocket() {
     });
 }
 
-
-
 /**
- * called when the Send button is pressed. It gets the text to send from the interface
- * and sends the message via  socket
+ * Called when the Send button for chat is pressed.
+ * Retrieves the input text from the interface and sends the message via the socket.
  */
 function sendChatText() {
     let chatText = document.getElementById('chat_input').value;
@@ -113,10 +109,9 @@ function sendChatText() {
     saveMessageToMongoDB(roomNo, name, chatText);
 }
 
-
 /**
- * called when the Send button is pressed for news. It gets the text to send from the interface
- * and sends the message via  socket
+ * Called when the Send button for news is pressed.
+ * Retrieves the input text from the interface and sends the message via the socket.
  */
 function sendNewsText() {
     let newsText = document.getElementById('news_input').value;
@@ -132,11 +127,9 @@ function sendNewsText() {
     document.getElementById('news_input').value = '';
 }
 
-
 /**
- * used to connect to a room. It gets the user name and room number from the
- * interface
- * It connects both chat and news at the same time
+ * Connects the user to a chat room by retrieving the user name and room number
+ * from the interface. Establishes connections for both chat and news sockets.
  */
 function connectToRoom() {
     name = getUserName();
@@ -166,12 +159,12 @@ function connectToRoom() {
     loadChatHistory(roomNo);
 }
 
-
-
-
 /**
- * it appends the given html text to the history div
- * @param text: teh text to append
+ * Appends the given chat message to the chat history display.
+ *
+ * @param {string} userId - The ID of the user who sent the message.
+ * @param {string} message - The message text.
+ * @param {number} timestamp - The timestamp of the message.
  */
 function writeOnChatHistory(userId, message, timestamp) {
     const history = document.getElementById('chat_history');
@@ -188,11 +181,12 @@ function writeOnChatHistory(userId, message, timestamp) {
     document.getElementById('chat_input').value = '';
 }
 
-
-
 /**
- * it appends the given html text to the history div
- * @param text: teh text to append
+ * Appends the given news message to the news history display.
+ *
+ * @param {string} userId - The ID of the user who sent the news.
+ * @param {string} message - The news text.
+ * @param {number} timestamp - The timestamp of the news.
  */
 function writeOnNewsHistory(userId, message, timestamp) {
     const history = document.getElementById('news_history');
@@ -209,19 +203,24 @@ function writeOnNewsHistory(userId, message, timestamp) {
     document.getElementById('news_input').value = '';
 }
 
-
-
 /**
- * it hides the initial form and shows the chat
- * @param room the selected room
- * @param userId the user name
+ * Displays the chat interface for the given room and user.
+ *
+ * @param {string} room - The room to display.
+ * @param {string} userId - The user ID to display.
  */
 function DisplayRoom(room, userId) {
     document.getElementById('who_you_are').innerHTML= userId;
     document.getElementById('in_room').innerHTML= ' '+room;
 }
 
-
+/**
+ * Saves the given message to MongoDB for persistence.
+ *
+ * @param {string} room - The room where the message was sent.
+ * @param {string} userId - The ID of the user who sent the message.
+ * @param {string} message - The message text.
+ */
 async function saveMessageToMongoDB(room, userId, message) {
     console.log(`[MongoDB] Tentative de sauvegarde du message dans la room: ${room}, Utilisateur: ${userId}, Message: ${message}`);
     try {
@@ -240,7 +239,11 @@ async function saveMessageToMongoDB(room, userId, message) {
     }
 }
 
-
+/**
+ * Loads the chat history for the given room from MongoDB and displays it.
+ *
+ * @param {string} room - The room for which to load the chat history.
+ */
 async function loadChatHistory(room) {
     console.log(`[MongoDB] Chargement de l'historique pour la room: ${room}`);
 
@@ -285,25 +288,40 @@ async function loadChatHistory(room) {
     }
 }
 
-
-
-
+/**
+ * Displays the loading message for the chat history.
+ */
 function showChatLoading() {
     document.getElementById('chat_loading_message').style.display = 'block';
 }
 
+/**
+ * Hides the loading message for the chat history.
+ */
 function hideChatLoading() {
     document.getElementById('chat_loading_message').style.display = 'none';
 }
 
+/**
+ * Displays the loading message for the news history.
+ */
 function showNewsLoading() {
     document.getElementById('news_loading_message').style.display = 'block';
 }
 
+/**
+ * Hides the loading message for the news history.
+ */
 function hideNewsLoading() {
     document.getElementById('news_loading_message').style.display = 'none';
 }
 
+/**
+ * Formats a timestamp into a human-readable date and time string.
+ *
+ * @param {number} timestamp - The timestamp to format.
+ * @returns {string} The formatted date and time string.
+ */
 function formatDate(timestamp) {
     const date = new Date(timestamp);
     return `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
