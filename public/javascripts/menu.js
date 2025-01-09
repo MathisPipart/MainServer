@@ -3,7 +3,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadReleases();
 });
 
-
+/**
+ * Fetches and loads distinct genres from the server and populates the genres dropdown menu.
+ * The genres are divided into columns for better display and each genre is added as a link.
+ *
+ * @async
+ * @function loadGenres
+ * @returns {Promise<void>} A promise that resolves when genres are successfully fetched and loaded,
+ *                          or logs an error to the console if the operation fails.
+ *
+ * @example
+ * // Populates the #genreContainer element with genre links grouped into columns
+ * loadGenres();
+ */
 async function loadGenres() {
     try {
         const response = await fetch('/springboot/distinctGenres');
@@ -41,6 +53,19 @@ async function loadGenres() {
 }
 
 
+/**
+ * Fetches and loads distinct release dates from the server and populates the releases dropdown menu.
+ * Each date is added as a link in a list item.
+ *
+ * @async
+ * @function loadReleases
+ * @returns {Promise<void>} A promise that resolves when release dates are successfully fetched and loaded,
+ *                          or logs an error to the console if the operation fails.
+ *
+ * @example
+ * // Populates the #releaseContainer element with release date links
+ * loadReleases();
+ */
 async function loadReleases() {
     try {
         const response = await fetch('/springboot/distinctDates');
