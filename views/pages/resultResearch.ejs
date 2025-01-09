@@ -56,11 +56,13 @@
   </div>
 <% } %>
 
+<% if (movies && movies.length >= 20) { %>
     <%- include('../components/pagination', {
       baseUrl: '/springboot/findByKeyword',
       queryString: `name=${query}&`,
       currentPage: currentPage
     }) %>
+<% } %>
 
 </body>
 </html>

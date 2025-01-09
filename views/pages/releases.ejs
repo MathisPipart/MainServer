@@ -41,11 +41,13 @@
         <% }) %>
     </div>
 
-    <%- include('../components/pagination', {
-      baseUrl: '/springboot/releases',
-      queryString: `date=${date}&`,
-      currentPage: currentPage
-    }) %>
+    <% if (movies && movies.length >= 20) { %>
+        <%- include('../components/pagination', {
+          baseUrl: '/springboot/releases',
+          queryString: `date=${date}&`,
+          currentPage: currentPage
+        }) %>
+    <% } %>
 
 <% } else { %>
     <p>No movies found for this year.</p>

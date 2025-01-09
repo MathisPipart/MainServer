@@ -35,12 +35,12 @@
         <% }) %>
     </div>
 
-
-    <%- include('../components/pagination', {
-      baseUrl: '/springboot/genres',
-      queryString: `genre=${genre}&`,
-      currentPage: currentPage
-    }) %>
-
+    <% if (movies && movies.length >= 20) { %>
+        <%- include('../components/pagination', {
+          baseUrl: '/springboot/genres',
+          queryString: `genre=${genre}&`,
+          currentPage: currentPage
+        }) %>
+    <% } %>
 
 <% } %>
