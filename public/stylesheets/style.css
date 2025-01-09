@@ -74,3 +74,10 @@ h1 {
 #homeH1{
   margin-bottom: 50px;
 }
+
+.scrollable-dropdown {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+

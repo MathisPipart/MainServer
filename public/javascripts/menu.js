@@ -1,3 +1,9 @@
+document.addEventListener('DOMContentLoaded', () => {
+    loadGenres();
+    loadReleases();
+});
+
+
 async function loadGenres() {
     try {
         const response = await fetch('/springboot/distinctGenres');
@@ -34,6 +40,28 @@ async function loadGenres() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadGenres();
-});
+
+async function loadReleases() {
+    try {
+        const response = await fetch('/springboot/distinctDates');
+        if (response.ok) {
+            const dates = await response.json();
+            const releaseContainer = document.getElementById('releaseContainer');
+
+            // Ajouter les années comme éléments de menu
+            dates.forEach(date => {
+                const releaseItem = document.createElement('li');
+                const releaseLink = document.createElement('a');
+                releaseLink.classList.add('dropdown-item');
+                releaseLink.href = `/springboot/releases?date=${encodeURIComponent(date)}`;
+                releaseLink.textContent = date;
+                releaseItem.appendChild(releaseLink);
+                releaseContainer.appendChild(releaseItem);
+            });
+        } else {
+            console.error('Failed to fetch release dates:', response.status);
+        }
+    } catch (error) {
+        console.error('Error fetching release dates:', error);
+    }
+}
