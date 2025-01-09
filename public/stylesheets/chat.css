@@ -15,7 +15,6 @@
 .left {
     left: 0;
     background-color: #ffffff;
-    padding-top: 56px;
 }
 
 /* Control the right side of chat */
@@ -23,7 +22,6 @@
     right: 0;
     background-color: #228B22;
     color: white;
-    padding-top: 56px;
 }
 
 .chat-title, .news-title {
@@ -33,9 +31,9 @@
 }
 
 .chat-container {
-    background-color: #f3f8ff;
-    border-right: 2px solid #ccc;
-    margin-top: -27px;
+    background-color: #e0f0ff;
+    border-right: 1px solid #b0d4f1;
+    margin-top: -30px;
     padding-bottom: 50px;
     margin-bottom: -27px;
     padding-left: 30px;
@@ -44,7 +42,7 @@
 
 .news-container {
     background-color: #eaf6e9;
-    margin-top: -27px;
+    margin-top: -30px;
     padding-bottom: 50px;
     margin-bottom: -27px;
     padding-right: 30px;
