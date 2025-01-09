@@ -856,6 +856,18 @@ router.get('/languages/distinctTypes', async (req, res) => {
     }
 });
 
+
+router.get('/distinctGenres', async (req, res) => {
+    try {
+        const response = await axios.get(`${SPRING_BOOT_API}/genres/distinctGenres`);
+        res.status(200).json(response.data);
+        console.log(response.data);
+    } catch (error) {
+        console.error('Error retrieving distinct types:', error.message);
+        res.status(500).json({ error: 'Error retrieving types.' });
+    }
+});
+
 function groupMoviesById(data) {
     const movies = {};
     data.forEach(row => {
