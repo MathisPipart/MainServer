@@ -1,3 +1,8 @@
+/**
+ * Sets the user name in the session storage and logs the action.
+ *
+ * @param {string} userName - The user name to set. If null or empty, the user name is removed from session storage.
+ */
 function setUserName(userName) {
     if (userName) {
         sessionStorage.setItem('userName', userName);
@@ -8,6 +13,11 @@ function setUserName(userName) {
     }
 }
 
+/**
+ * Retrieves the user name from session storage.
+ *
+ * @returns {string} The user name, or an empty string if no name is found.
+ */
 function getUserName() {
     const userName = sessionStorage.getItem('userName') || '';
     if (!userName) {
@@ -16,7 +26,12 @@ function getUserName() {
     return userName;
 }
 
-// Handles chat redirection
+/**
+ * Redirects the user to the chat page after validating the user name and room details.
+ *
+ * @param {string} roomId - The ID of the chat room to join.
+ * @param {string} movieName - The name of the movie associated with the chat room.
+ */
 function goToChat(roomId, movieName) {
     const userNameInput = document.getElementById('userName');
     let userName = userNameInput ? userNameInput.value.trim() : '';
@@ -36,8 +51,10 @@ function goToChat(roomId, movieName) {
     window.location.href = `/chat?roomNo=${roomId}&movieName=${encodeURIComponent(movieName)}&name=${encodeURIComponent(userName)}`;
 }
 
-
-// Updates userName field and synchronizes with sessionStorage
+/**
+ * Updates the user name in session storage based on the input field value.
+ * Removes the user name from session storage if the input is empty.
+ */
 function updateUserName() {
     const userNameInput = document.getElementById('userName');
     const userName = userNameInput.value.trim();
@@ -49,6 +66,9 @@ function updateUserName() {
     }
 }
 
+/**
+ * Initializes the user name field and synchronizes it with session storage on page load.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const userNameInput = document.getElementById('userName');
 

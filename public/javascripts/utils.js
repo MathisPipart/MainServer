@@ -5,7 +5,6 @@ module.exports = {
      * @param {number} minutes - The duration in minutes.
      * @returns {string} A formatted string representing the duration in hours and minutes (e.g., "1h30min"),
      *                   or "No duration available" if the input is invalid or undefined.
-     *
      * @example
      * formatDuration(45); // Returns "45min"
      * formatDuration(120); // Returns "2h"
