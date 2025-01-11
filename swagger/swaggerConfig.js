@@ -1,5 +1,6 @@
 const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+const path = require('path');
 
 const options = {
     definition: {
@@ -16,7 +17,7 @@ const options = {
             },
         ],
     },
-    apis: ["./routes/mongoDB.js", "./routes/index.js", "./routes/springboot.js"],
+    apis: [path.join(__dirname, '../routes/mongoDB.js'), path.join(__dirname, '../routes/index.js'), path.join(__dirname, '../routes/springboot.js')],
 };
 
 const swaggerSpec = swaggerJsDoc(options);
